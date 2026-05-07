@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Skármeta Vocabulario — Q1</title>
+  <title>Vocabulario de la unidad 1-5B</title>
   <style>
     :root {
       --bg: #0f1117;
@@ -140,6 +140,8 @@
     .level-card.lv1::before { background: var(--accent); }
     .level-card.lv2::before { background: var(--accent3); }
     .level-card.lv3::before { background: var(--danger); }
+    .level-card.lv4::before { background: var(--accent2); }
+    .level-card.lv5::before { background: #00d4ff; }
     .level-card:hover {
       border-color: var(--accent); transform: translateY(-3px);
       box-shadow: 0 8px 32px rgba(88,204,2,0.12);
@@ -674,8 +676,8 @@
       </defs>
     </svg>
     <div>
-      <h1>Skármeta Vokabular</h1>
-      <p>La realidad chilena · Q1 Jahrgangsstufe 12</p>
+      <h1>Vocabulario de la unidad 1-5B</h1>
+      <p>Klett Vamos! Adelante! · Español 9</p>
     </div>
   </div>
   <div class="header-stats">
@@ -708,16 +710,16 @@
 
   <!-- LANDING -->
   <div id="screen-landing" class="screen active">
-    <h2>Bienvenidos al Vocabulario</h2>
-    <p>Begriffe aus <em>La realidad chilena en la literatura de Antonio Skármeta</em>.<br>
+    <h2>Vocabulario de la unidad 1–5B</h2>
+    <p>425 Wörter aus <em>Klett Vamos! Adelante! Curso intensivo</em> — Unidades 1 bis 5.<br>
        Wähle dein Level und starte die Übung.</p>
 
     <div class="landing-qr">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://albecabrera.github.io/antonio_skarmenta/&color=58cc02&bgcolor=1a1d2e&margin=12"
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://albecabrera.github.io/espa-ol_9_unidad1-5/&color=58cc02&bgcolor=1a1d2e&margin=12"
            alt="QR Code zum Spiel" width="160" height="160">
       <div class="landing-qr-link">
         <span>Kurzlink zum Spiel:</span>
-        <a href="https://tinyurl.com/2d8762ey" target="_blank">tinyurl.com/2d8762ey</a>
+        <a href="https://tinyurl.com/25rmx3qx" target="_blank">tinyurl.com/25rmx3qx</a>
       </div>
     </div>
 
@@ -725,23 +727,34 @@
       <div class="level-card lv1" onclick="selectLevel(1)">
         <div class="lv-icon">📖</div>
         <div class="lv-badge">Level 1</div>
-        <div class="lv-name">Einsteiger</div>
-        <div class="lv-desc">Kernvokabular: Politik & Gesellschaft. Karteikarten + Multiple Choice.</div>
+        <div class="lv-name">Unidad 1</div>
+        <div class="lv-desc">Begr&#252;&#223;ung, Vorstellung, Zahlen. 54 W&#246;rter.</div>
       </div>
       <div class="level-card lv2" onclick="selectLevel(2)">
-        <div class="lv-icon">✍️</div>
+        <div class="lv-icon">&#9997;&#65039;</div>
         <div class="lv-badge">Level 2</div>
-        <div class="lv-name">Fortgeschritten</div>
-        <div class="lv-desc">Literatur & Metaphern. Tippeingabe ohne Hilfe.</div>
+        <div class="lv-name">Unidades 1&#8211;2</div>
+        <div class="lv-desc">Familie, Schule, Freizeit. 137 W&#246;rter.</div>
       </div>
       <div class="level-card lv3" onclick="selectLevel(3)">
-        <div class="lv-icon">🎓</div>
+        <div class="lv-icon">&#128483;&#65039;</div>
         <div class="lv-badge">Level 3</div>
-        <div class="lv-name">Experte</div>
-        <div class="lv-desc">Alle Begriffe gemischt, alle Modi, ohne Limite.</div>
+        <div class="lv-name">Unidades 1&#8211;3</div>
+        <div class="lv-desc">Alltag &amp; Stadt dazu. 208 W&#246;rter.</div>
+      </div>
+      <div class="level-card lv4" onclick="selectLevel(4)">
+        <div class="lv-icon">&#127757;</div>
+        <div class="lv-badge">Level 4</div>
+        <div class="lv-name">Unidades 1&#8211;4</div>
+        <div class="lv-desc">Reisen &amp; Umwelt. 317 W&#246;rter.</div>
+      </div>
+      <div class="level-card lv5" onclick="selectLevel(5)">
+        <div class="lv-icon">&#127891;</div>
+        <div class="lv-badge">Level 5</div>
+        <div class="lv-name">Unidades 1&#8211;5</div>
+        <div class="lv-desc">Alles &#8212; alle 425 W&#246;rter aus dem Buch.</div>
       </div>
     </div>
-  </div>
 
   <!-- MODE SELECT -->
   <div id="screen-mode" class="screen">
@@ -1011,47 +1024,446 @@
 
 <script>
 const VOCAB = [
-  { es: "la dictadura",        de: "die Diktatur",                               ctx_es: "Unter Pinochets Diktatur wurden Tausende verfolgt.",       ctx_de: "Pinochet etablierte eine brutale Diktatur.",               cat: "Politik" },
-  { es: "el golpe de estado",  de: "der Staatsstreich / der Putsch",             ctx_es: "El golpe de estado de 1973 cambió Chile para siempre.",   ctx_de: "Der Putsch von 1973 veränderte Chile für immer.",          cat: "Politik" },
-  { es: "el exilio",           de: "das Exil",                                   ctx_es: "Muchos artistas vivieron en el exilio.",                   ctx_de: "Viele Künstler lebten im Exil.",                           cat: "Politik" },
-  { es: "la represión",        de: "die Unterdrückung / die Repression",         ctx_es: "La represión silenciaba toda voz crítica.",               ctx_de: "Die Repression erstickte jede kritische Stimme.",          cat: "Politik" },
-  { es: "el desaparecido",     de: "der/die Verschwundene",                      ctx_es: "Los desaparecidos nunca regresaron.",                     ctx_de: "Die Verschwundenen kehrten nie zurück.",                   cat: "Politik" },
-  { es: "la resistencia",      de: "der Widerstand",                             ctx_es: "La resistencia popular no se rindió.",                    ctx_de: "Der Volkswidertand gab nicht auf.",                        cat: "Politik" },
-  { es: "el toque de queda",   de: "die Ausgangssperre",                         ctx_es: "El toque de queda impedía salir de noche.",               ctx_de: "Die Ausgangssperre verhinderte nächtliche Aktivitäten.",   cat: "Politik" },
-  { es: "la censura",          de: "die Zensur",                                 ctx_es: "La censura eliminó libros y canciones.",                  ctx_de: "Die Zensur vernichtete Bücher und Lieder.",                cat: "Politik" },
-  { es: "el régimen",          de: "das Regime",                                 ctx_es: "El régimen militar controlaba todo.",                     ctx_de: "Das Militärregime kontrollierte alles.",                   cat: "Politik" },
-  { es: "la junta militar",    de: "die Militärjunta",                           ctx_es: "La junta militar tomó el poder en 1973.",                 ctx_de: "Die Militärjunta übernahm 1973 die Macht.",                cat: "Politik" },
-  { es: "la solidaridad",      de: "die Solidarität",                            ctx_es: "La solidaridad entre vecinos fue esencial.",              ctx_de: "Die Solidarität unter Nachbarn war wesentlich.",           cat: "Gesellschaft" },
-  { es: "la pobreza",          de: "die Armut",                                  ctx_es: "La pobreza marcó la vida de los personajes.",             ctx_de: "Armut prägte das Leben der Figuren.",                     cat: "Gesellschaft" },
-  { es: "la esperanza",        de: "die Hoffnung",                               ctx_es: "A pesar de todo, guardaban la esperanza.",                ctx_de: "Trotz allem bewahrten sie die Hoffnung.",                 cat: "Gesellschaft" },
-  { es: "el miedo",            de: "die Angst / die Furcht",                     ctx_es: "El miedo era el arma más poderosa del régimen.",          ctx_de: "Angst war die mächtigste Waffe des Regimes.",             cat: "Gesellschaft" },
-  { es: "la memoria colectiva",de: "das kollektive Gedächtnis",                  ctx_es: "La literatura preserva la memoria colectiva.",            ctx_de: "Die Literatur bewahrt das kollektive Gedächtnis.",         cat: "Gesellschaft" },
-  { es: "la identidad nacional",de: "die nationale Identität",                   ctx_es: "Skármeta explora la identidad nacional chilena.",          ctx_de: "Skármeta erkundet die chilenische nationale Identität.",   cat: "Gesellschaft" },
-  { es: "el pueblo",           de: "das Volk / die Gemeinde",                    ctx_es: "El pueblo resistió a pesar del terror.",                  ctx_de: "Das Volk widerstand trotz des Terrors.",                  cat: "Gesellschaft" },
-  { es: "el testimonio",       de: "das Zeugnis / der Bericht",                  ctx_es: "Su testimonio dejó huella en la historia.",               ctx_de: "Sein Zeugnis hinterließ Spuren in der Geschichte.",        cat: "Gesellschaft" },
-  { es: "el narrador",         de: "der Erzähler",                               ctx_es: "El narrador es testigo de los hechos.",                   ctx_de: "Der Erzähler ist Zeuge der Ereignisse.",                  cat: "Literatur" },
-  { es: "la metáfora",         de: "die Metapher",                               ctx_es: "Usa la metáfora del fútbol para hablar de libertad.",     ctx_de: "Er benutzt die Fußballmetapher für Freiheit.",             cat: "Literatur" },
-  { es: "el compromiso político", de: "das politische Engagement",               ctx_es: "Skármeta muestra un fuerte compromiso político.",         ctx_de: "Skármeta zeigt starkes politisches Engagement.",          cat: "Literatur" },
-  { es: "la voz narrativa",    de: "die Erzählerstimme",                         ctx_es: "La voz narrativa es cercana al lector.",                  ctx_de: "Die Erzählerstimme ist dem Leser nah.",                   cat: "Literatur" },
-  { es: "el realismo mágico",  de: "der magische Realismus",                     ctx_es: "El realismo mágico mezcla lo cotidiano y lo fantástico.", ctx_de: "Der magische Realismus mischt Alltag und Fantastisches.", cat: "Literatur" },
-  { es: "el protagonista",     de: "der Protagonist / die Hauptfigur",           ctx_es: "El protagonista busca su identidad.",                     ctx_de: "Der Protagonist sucht seine Identität.",                  cat: "Literatur" },
-  { es: "la trama",            de: "die Handlung / der Plot",                    ctx_es: "La trama se desarrolla en Santiago.",                     ctx_de: "Die Handlung spielt sich in Santiago ab.",                cat: "Literatur" },
-  { es: "el símbolo",          de: "das Symbol",                                 ctx_es: "El cartero es símbolo de conexión humana.",               ctx_de: "Der Briefträger ist ein Symbol menschlicher Verbindung.", cat: "Literatur" },
-  { es: "la Unidad Popular",   de: "die Volkseinheit (linkes Wahlbündnis)",      ctx_es: "La UP fue derrocada en 1973.",                            ctx_de: "Die Volkseinheit wurde 1973 gestürzt.",                   cat: "Chile" },
-  { es: "el Estadio Nacional", de: "das Nationalstadion (als Lager genutzt)",    ctx_es: "El Estadio Nacional fue usado como centro de detención.", ctx_de: "Das Nationalstadion wurde als Haftlager genutzt.",        cat: "Chile" },
-  { es: "la DINA",             de: "die DINA (Geheimpolizei Pinochets)",          ctx_es: "La DINA perseguía a los opositores.",                     ctx_de: "Die DINA verfolgte die Oppositionellen.",                  cat: "Chile" },
-  { es: "la Nueva Canción Chilena", de: "der Neue Chilenische Gesang",           ctx_es: "Víctor Jara fue símbolo de la Nueva Canción Chilena.",    ctx_de: "Víctor Jara war Symbol des Neuen Chilenischen Gesangs.", cat: "Chile" },
+  { es: "¡Hola!", de: "Hallo!", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Qué tal?", de: "Wie geht's?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Qué...?", de: "Was...?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¡Buenos días!", de: "Guten Morgen! / Guten Tag!", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "el día", de: "der Tag", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¡Buenas tardes!", de: "Guten Tag! / Guten Abend!", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "la tarde", de: "der Nachmittag; der Abend", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¡Buenas noches!", de: "Guten Abend! / Gute Nacht!", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "la noche", de: "die Nacht", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "yo", de: "ich", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "muy", de: "sehr", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "bien (adv.)", de: "gut", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "Me llamo...", de: "Ich heiße...", ctx_es: "Me llamo Thomas.", ctx_de: "Ich heiße Thomas.", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "soy de", de: "ich komme aus", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "España", de: "Spanien", ctx_es: "Soy de España.", ctx_de: "Ich komme aus Spanien.", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "y", de: "und", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "tú", de: "du", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¡Adiós!", de: "Auf Wiedersehen! / Tschüs!", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "(yo) soy...", de: "Ich bin...", ctx_es: "Soy Ana.", ctx_de: "Ich bin Ana.", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "México", de: "Mexiko", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Cómo te llamas?", de: "Wie heißt du?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Cómo...?", de: "Wie...?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿De dónde eres?", de: "Woher kommst du?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Dónde...?", de: "Wo...?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¡Hasta luego!", de: "Bis später!", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "hasta", de: "bis", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "luego", de: "später", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "vivo en", de: "ich lebe in", ctx_es: "Vivo en Barcelona.", ctx_de: "Ich lebe in Barcelona.", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "en", de: "in; auf; an", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Dónde vives?", de: "Wo lebst du?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "pronto", de: "bald", ctx_es: "¡Hasta pronto!", ctx_de: "Bis bald!", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Cómo estás?", de: "Wie geht es dir?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "Alemania", de: "Deutschland", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "Andalucía", de: "Andalusien", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "así, así", de: "so lala; es geht; einigermaßen", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "así", de: "so; auf diese Weise", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "pero", de: "aber", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "también", de: "auch", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "el número", de: "die Nummer; die Zahl", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "más", de: "plus", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "menos", de: "minus", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "son", de: "sie sind", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Cuántos años tienes?", de: "Wie alt bist du?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "tengo", de: "ich habe", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "el año", de: "das Jahr", ctx_es: "Tengo catorce años.", ctx_de: "Ich bin vierzehn Jahre alt.", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "Mi número de teléfono es el...", de: "Meine Telefonnummer lautet...", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "el teléfono", de: "das Telefon", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "el móvil", de: "das Handy", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "tienes", de: "du hast", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "¿Cuál es tu número de teléfono?", de: "Wie lautet deine Telefonnummer?", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "ahora", de: "jetzt", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "el/la", de: "der/die/das (bestimmter Artikel)", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "los / las", de: "die (Plural)", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "un / una", de: "ein/eine (unbestimmter Artikel)", ctx_es: "", ctx_de: "", cat: "Hola! Qué tal?",  unidad: 1 },
+  { es: "el mundo", de: "die Welt", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "mi", de: "mein/meine", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "el mejor amigo / la mejor amiga", de: "der beste Freund / die beste Freundin", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "la mascota", de: "das Haustier", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "el gato", de: "die Katze", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "la ciudad", de: "die Stadt", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "se llama...", de: "er/sie heißt...", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "el abuelo / la abuela", de: "der Großvater / die Großmutter", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "los abuelos", de: "die Großeltern", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "el tío / la tía", de: "der Onkel / die Tante", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "el padre", de: "der Vater", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "la madre", de: "die Mutter", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "los padres", de: "die Eltern", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "el hermano / la hermana", de: "der Bruder / die Schwester", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "los hermanos", de: "die Geschwister", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "tu", de: "dein/deine", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "sí", de: "ja", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "no", de: "nein; nicht", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 2 },
+  { es: "la familia", de: "die Familie", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "con", de: "mit", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el acento", de: "der Akzent", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el punto", de: "der Punkt", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "¿Quién es?", de: "Wer ist das?", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "él", de: "er", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "ella", de: "sie", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "nosotros, -as", de: "wir", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "vosotros, -as", de: "ihr", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "ellos", de: "sie (m.)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "ellas", de: "sie (f.)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "ser (irr.)", de: "sein", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "más", de: "mehr; weitere", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el perro", de: "der Hund", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "genial", de: "genial", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el papá / la mamá", de: "der Papa / die Mama", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "estudiar", de: "lernen; studieren", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el español", de: "Spanisch; die spanische Sprache", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el inglés", de: "Englisch; die englische Sprache", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el alemán", de: "Deutsch; die deutsche Sprache", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el novio / la novia", de: "der feste Freund / die feste Freundin", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el hijo / la hija", de: "der Sohn / die Tochter", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el médico / la médica", de: "der Arzt / die Ärztin", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "trabajar", de: "arbeiten", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el apellido", de: "der Nachname", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el nombre", de: "der Name", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el instituto", de: "das Gymnasium", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el actor / la actriz", de: "der Schauspieler / die Schauspielerin", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el dibujo", de: "die Zeichnung", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "la persona", de: "die Person", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "hablar por teléfono", de: "telefonieren", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "todos los días", de: "jeden Tag", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el verano", de: "der Sommer", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "pasar", de: "verbringen", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "las vacaciones", de: "die Ferien; der Urlaub", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 2 },
+  { es: "el palacio", de: "der Palast; das Schloss", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la plaza", de: "der Platz", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la estación", de: "der Bahnhof", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el parque", de: "der Park", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la catedral", de: "der Dom; die Kathedrale", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el museo", de: "das Museum", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el estadio", de: "das Stadion", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la calle", de: "die Straße", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el hotel", de: "das Hotel", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la fiesta", de: "die Party; das Fest", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la casa", de: "das Haus; die Wohnung", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la playa", de: "der Strand", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el centro", de: "das (Stadt)Zentrum", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el chico / la chica", de: "der Junge / das Mädchen", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el monumento", de: "die Sehenswürdigkeit", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la costa", de: "die Küste", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el autobús", de: "der Bus", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el animal", de: "das Tier", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "la cosa", de: "die Sache; das Ding", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el amigo / la amiga", de: "der Freund / die Freundin", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el profesor / la profesora", de: "der Lehrer / die Lehrerin", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el bar", de: "die Kneipe", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el taxi", de: "das Taxi", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "el idioma", de: "die Sprache", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "en casa", de: "zu Hause", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "hablar", de: "sprechen; reden", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "mis", de: "meine (Plural)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "Ciudad de México", de: "Mexiko-Stadt", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "(los) Estados Unidos", de: "die Vereinigten Staaten", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "Portugal", de: "Portugal", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 2 },
+  { es: "al lado de", de: "neben", ctx_es: "¿Está al lado del cine?", ctx_de: "Ist es neben dem Kino?", cat: "Vocabulario",  unidad: 3 },
+  { es: "lo mejor", de: "das Beste", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "¿Qué pasa (con...)?", de: "Was ist (los mit...)?", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "no sé", de: "ich weiß nicht", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "normal", de: "normal", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "loco, -a", de: "verrückt", ctx_es: "Tengo una vecina loca.", ctx_de: "Ich habe eine verrückte Nachbarin.", cat: "Vocabulario",  unidad: 3 },
+  { es: "por la noche", de: "am Abend; abends; in der Nacht; nachts", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "escuchar algo/a alguien", de: "etw./jdn hören", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el ruido", de: "das Geräusch; der Lärm", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "a veces", de: "manchmal", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "su", de: "sein; ihr; ihre; ihr...", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "hablar solo, -a", de: "ein Selbstgespräch führen", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "solo, -a", de: "allein", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "¡Qué miedo!", de: "Was für eine Angst hatte ich!", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el miedo", de: "die Angst", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la serie", de: "die Fernsehserie", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "hoy", de: "heute", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "a lo mejor", de: "vielleicht", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "simpático, -a", de: "sympathisch", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "¡Qué gracioso!", de: "Wie witzig!", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "gracioso, -a", de: "witzig", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "¡Ni loco, -a!", de: "Nicht einmal im Traum!", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "quedar", de: "sich verabreden; sich treffen", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "esta tarde", de: "heute Nachmittag", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "Vale.", de: "Einverstanden.; O.K.", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "vive", de: "er/sie/es lebt; er/sie/es wohnt", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "debajo de", de: "unter", ctx_es: "¿Debajo de tu perro?", ctx_de: "Unter deinem Hund?", cat: "Vocabulario",  unidad: 3 },
+  { es: "delante de", de: "vor", ctx_es: "¿Quedamos delante del cine?", ctx_de: "Treffen wir uns vor dem Kino?", cat: "Vocabulario",  unidad: 3 },
+  { es: "detrás de", de: "hinter", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "a la derecha (de)", de: "rechts (von)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "a la izquierda (de)", de: "links (von)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "lejos (de)", de: "weit entfernt (von)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "entre (... y ...)", de: "zwischen (... und ...)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el teatro", de: "das Theater", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "importante", de: "wichtig", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "desde", de: "von; aus; abbiegen", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "girar", de: "abbiegen", ctx_es: "Giras en la primera calle a la izquierda.", ctx_de: "Du biegst in die erste Straße links ab.", cat: "Vocabulario",  unidad: 3 },
+  { es: "al final", de: "zum Schluss; am Ende", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "aquí", de: "hier", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "terminar (algo)", de: "etw. beenden; enden", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la comida", de: "das Essen", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "típico, -a", de: "typisch", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el calamar", de: "der Tintenfisch", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el churro", de: "Churro (spanisches frittiertes Spritzgebäck)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el chocolate", de: "die (Trink)Schokolade", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "rico, -a", de: "lecker; reich", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el consejo", de: "der Rat; der Tipp", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la tienda", de: "der Laden; das Geschäft", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "interesante", de: "interessant", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la línea", de: "die Linie", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "¿Adónde?", de: "Wohin?", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "todo recto", de: "geradeaus (weiter)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "ir (irr.)", de: "gehen; fahren", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el kilómetro", de: "der Kilometer", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "cruzar algo", de: "etw. überqueren", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "tomar algo", de: "etw. nehmen", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la cama", de: "das Bett", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la mesa", de: "der Tisch", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el armario", de: "der Schrank", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el ordenador", de: "der Computer", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la puerta", de: "die Tür; das Tor", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la silla", de: "der Stuhl", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "encima de", de: "auf", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el paseo", de: "der Spaziergang", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "por", de: "durch; entlang; in", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "preparar algo", de: "etw. zubereiten; etw. vorbereiten", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el centro histórico", de: "die Altstadt", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "por eso", de: "deswegen; deshalb", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "mirar algo/a alguien", de: "etw./jdn (an)schauen", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "la guía", de: "der Reiseführer (Buch)", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "sobre", de: "über", ctx_es: "", ctx_de: "", cat: "Vocabulario",  unidad: 3 },
+  { es: "el tiempo libre", de: "die Freizeit", ctx_es: "En mi tiempo libre voy al cine.", ctx_de: "In meiner Freizeit gehe ich ins Kino.", cat: "Primer paso",  unidad: 4 },
+  { es: "el tiempo", de: "die Zeit", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "libre", de: "frei", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "ya no", de: "nicht mehr", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "chatear", de: "chatten", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "descansar", de: "sich ausruhen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "escalar", de: "klettern", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "la música", de: "die Musik", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "hacer (irr.) algo", de: "etw. machen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "el deporte", de: "der Sport", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "ir de compras", de: "shoppen gehen; einkaufen gehen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "leer algo", de: "etw. lesen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "el libro", de: "das Buch", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "montar en bicicleta", de: "Rad fahren", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "ver (irr.) algo/a alguien", de: "etw./jdn (an)schauen; sehen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "la (tele)visión", de: "das Fernsehen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "visitar algo/a alguien", de: "etw./jdn besuchen; etw. besichtigen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "Te gusta algo/hacer algo.", de: "Dir gefällt etw./Du machst etw. gerne.", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "Me gusta algo/hacer algo.", de: "Mir gefällt etw./Ich mache etw. gerne.", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "gustar", de: "gefallen; mögen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "mucho (adv.)", de: "sehr", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "mi", de: "mir; mich", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "A mí también.", de: "Mir auch.; Ich auch.", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "A mí no.", de: "Mir nicht.; Ich nicht.", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "A mí tampoco.", de: "Mir auch nicht.; Ich auch nicht.", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "A mí sí.", de: "Mir schon.; Ich schon.", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 4 },
+  { es: "la encuesta", de: "die Umfrage", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "necesitar algo/a alguien", de: "etw./jdn brauchen", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la ayuda", de: "die Hilfe", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "para", de: "für", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "el minuto", de: "die Minute", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la pregunta", de: "die Frage", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "¿Cuándo...?", de: "Wann...?", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "normalmente", de: "normalerweise", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "los deberes (pl.)", de: "die Hausaufgaben", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "¿Cuál...?", de: "Welche, -r, -s...?", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "favorito, -a", de: "Lieblings-", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "siempre", de: "immer", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "por la tarde", de: "am Nachmittag", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "el cómic", de: "der Comic", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la guitarra", de: "die Gitarre", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "tocar", de: "spielen (Musikinstrument)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "vago, -a", de: "faul", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la película", de: "der Film", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "porque", de: "weil", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "solo", de: "nur", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "correr", de: "rennen; laufen", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "el partido de fútbol", de: "das Fußballspiel", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "el partido", de: "das Spiel; das Match", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "el fútbol", de: "der Fußball", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "menos", de: "außer", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "escribir algo/a alguien", de: "etw./jdm schreiben", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "algo", de: "etwas", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la clase", de: "der Unterricht; die Klasse; der Klassenraum; die Unterrichtsstunde", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "tampoco", de: "auch nicht", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "para mí", de: "für mich", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "o", de: "oder", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "u (vor o- und ho-)", de: "oder", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la piscina", de: "das Schwimmbad", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "comer algo", de: "etw. essen", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "tomar el sol", de: "sich sonnen", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "el programa", de: "die (Fernseh)Sendung", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "Gracias.", de: "Danke.", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "por la mañana", de: "am Morgen; am Vormittag", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la actividad", de: "die Aktivität; die Beschäftigung", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "¡Oye!", de: "Hör mal!", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "casi", de: "fast", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "a la semana", de: "pro Woche", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "la vez", de: "das Mal", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "nunca", de: "nie; niemals", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 4 },
+  { es: "el plan", de: "der Plan", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "¿Qué hora es?", de: "Wie spät ist es?", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "... en punto", de: "Punkt...; ...Uhr", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "y", de: "nach (Uhrzeit)", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "menos (Uhrzeit)", de: "vor (Uhrzeit)", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "un cuarto", de: "ein Viertel", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el reloj", de: "die Uhr", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "de la mañana", de: "morgens", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "de la tarde", de: "nachmittags; abends", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "de la noche", de: "abends; nachts", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "¿A qué hora...?", de: "Um wie viel Uhr...?", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "a las... a la...", de: "um... Uhr", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "recibir algo", de: "etw. empfangen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el mensaje", de: "die Nachricht", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "tener que hacer algo", de: "etw. tun müssen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "cuidar algo/de alguien", de: "sich mit etw./jdm kümmern", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "poder (-ue-) (hacer algo)", de: "(etw. tun) können; (etw. tun) dürfen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "tener ganas de algo/de hacer algo", de: "auf etw. Lust haben; etw. tun wollen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "querer (-ie-) algo", de: "etw. wollen; etw. mögen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el zoo", de: "der Zoo", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "estar castigado, -a sin salir", de: "Hausarrest haben", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "salir (-g-)", de: "ausgehen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "de... a", de: "von... bis", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "¡Besitos!", de: "Küsschen!", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "la sorpresa", de: "die Überraschung", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "la entrada", de: "die Eintrittskarte", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el parque de atracciones", de: "der Freizeitpark; der Vergnügungspark", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "¿Qué te parece si...?", de: "Was hältst du davon, wenn...?", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el cumpleaños", de: "der Geburtstag", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "¡Nos vemos!", de: "Bis bald!", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "comprar algo", de: "etw. kaufen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el regalo", de: "das Geschenk", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "después", de: "dann; danach", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "jugar (-ue-) a algo con alguien", de: "mit jdm etw. spielen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "jugar al baloncesto", de: "Basketball spielen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el baloncesto", de: "der Basketball", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "perfecto, -a", de: "perfekt", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "und", de: "und", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "e (vor i- und hi-)", de: "und (vor i und hi)", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 4 },
+  { es: "el día a día", de: "der Alltag", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el patio", de: "der Hof; der Schulhof", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el aula (f.)", de: "der Klassenraum", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el aula de informática", de: "der Computerraum", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "la informática", de: "die Informatik", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "la secretaría", de: "das Sekretariat", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el gimnasio", de: "die Turnhalle", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "la mochila", de: "der Rucksack", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "la carpeta", de: "der Ordner; die (Schreib)Mappe", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el bolígrafo", de: "der Kugelschreiber", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "la goma", de: "der Radiergummi", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el portátil", de: "der Laptop", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el cuaderno", de: "das Heft", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el estuche", de: "das (Feder)Mäppchen", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el lápiz", de: "der Bleistift; der Buntstift", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "los lápices", de: "die Buntstifte", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "la calculadora", de: "der Taschenrechner", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "¿Cuántos, -as...?", de: "Wie viele...?", ctx_es: "", ctx_de: "", cat: "Primer paso",  unidad: 5 },
+  { es: "el alumno / la alumna", de: "der Schüler / die Schülerin", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "el e-mail", de: "die E-Mail", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "el horario", de: "der Stundenplan", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la asignatura", de: "das Unterrichtsfach", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "las Matemáticas (pl.)", de: "Mathematik (Schulfach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la Música", de: "Musik (Schulfach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la Geografía e Historia", de: "Geschichte und Erdkunde (Schulfach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "el Francés", de: "Französisch (Schulfach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la Educación Física", de: "Sport (Schulfach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la educación", de: "die Erziehung; die Bildung", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "las Ciencias de la Naturaleza", de: "die Naturkunde (Schulfach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la ciencia", de: "die Wissenschaft", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la naturaleza", de: "die Natur", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "el inglés", de: "Englisch (Schulfach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la Lengua Castellana y Literatura", de: "Spanisch (als Fach Deutsch in Deutschland)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la lengua", de: "das Idiom; die Sprache", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "el castellano", de: "die spanische Sprache", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la literatura", de: "die Literatur (als Fach)", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "el recreo", de: "die Pause", ctx_es: "", ctx_de: "", cat: "Bloque A",  unidad: 5 },
+  { es: "la Expresión Plástica", de: "Kunst (Schulfach)", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "malo, -a", de: "schlecht", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "la cara", de: "das Gesicht", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "encontrar (-ue-) algo/a alguien", de: "etw./jdn finden", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "buscar algo/a alguien", de: "etw./jdn suchen", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "llamar a alguien", de: "jdn (an)rufen", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "¡Claro!", de: "Natürlich! Klar!", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "poner (-g-) algo", de: "etw. (hinein)legen; etw. setzen; etw. stellen", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "el silencio", de: "die Ruhe", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "tranquilo, -a", de: "ruhig", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "pensar (-ie-) en algo/alguien", de: "an etw./jdn denken", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "Mira.", de: "Schau (mal).", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "creer algo", de: "etw. glauben; etw. meinen", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "que", de: "dass", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "copiar algo", de: "etw. abschreiben; etw. kopieren", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "meter algo en algo", de: "etw. in etw. (hinein)legen; setzen", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "desde", de: "seit", ctx_es: "Estudio español desde septiembre.", ctx_de: "Ich lerne seit September Spanisch.", cat: "Vocabulario A",  unidad: 5 },
+  { es: "rojo, -a", de: "rot", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "tonto, -a", de: "dumm", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "ser de alguien", de: "jdm gehören", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "entonces", de: "dann", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "la nota", de: "die Notiz; die Note", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "la carta", de: "der Brief", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "el amor", de: "die Liebe", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "nuestro, -a", de: "unser/unsere", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "el secreto", de: "das Geheimnis", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "perder (-ie-) algo/a alguien", de: "etw./jdn verlieren", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "vuestro, -a", de: "euer/eure", ctx_es: "", ctx_de: "", cat: "Vocabulario A",  unidad: 5 },
+  { es: "quedarse", de: "bleiben; sich aufhalten", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "después de (+ inf.)", de: "nachdem", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "desayunar algo", de: "etw. frühstücken", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "lavarse los dientes", de: "sich die Zähne putzen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "lavarse", de: "sich waschen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "el diente", de: "der Zahn", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "antes de (+ inf.)", de: "bevor; vor", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "ducharse", de: "(sich) duschen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "el agua (f.)", de: "das Wasser", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "frío, -a", de: "kalt", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "ponerse algo", de: "etw. anziehen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "el pijama", de: "der Schlafanzug; der Pyjama", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "dormir (-ue-)", de: "schlafen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "para (+ inf.)", de: "um... zu", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "relajarse", de: "sich ausruhen; sich entspannen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "tomar algo", de: "etw. trinken; etw. essen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "la merienda", de: "kleine Zwischenmahlzeit am Nachmittag", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "irse", de: "gehen; weggehen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "levantarse", de: "aufstehen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "la leche", de: "die Milch", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "la galleta", de: "der Keks", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "la fruta", de: "das Obst", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "cenar", de: "zu Abend essen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "salir (-g-)", de: "(hinaus/heraus)gehen; verlassen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "la idea", de: "die Idee", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "estupendo, -a", de: "toll; prima", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "estar contento, -a", de: "froh sein; zufrieden sein", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "el extranjero", de: "das Ausland", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "ir de viaje", de: "verreisen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "el viaje", de: "die Reise", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "por", de: "wegen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "bueno, -a", de: "gut", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "guay", de: "toll; klasse", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "bienvenido, -a", de: "willkommen", ctx_es: "¡Bienvenido a Austria!", ctx_de: "Willkommen in Österreich!", cat: "Bloque B",  unidad: 5 },
+  { es: "primero", de: "zuerst", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "el país", de: "das Land", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "fantástico, -a", de: "fantastisch; toll", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "juntos, -as", de: "zusammen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "pelearse con alguien", de: "sich mit jdm streiten", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "la visita", de: "der Besuch; die Besichtigung", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "acabar de hacer algo", de: "gerade etw. getan haben", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "tardar (mucho)", de: "(lange) brauchen", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
+  { es: "tarde", de: "spät; zu spät", ctx_es: "", ctx_de: "", cat: "Bloque B",  unidad: 5 },
 ];
 
 const LEVEL_SETS = {
-  1: VOCAB.slice(0, 15),
-  2: VOCAB.slice(10, 27),
-  3: VOCAB,
+  1: VOCAB.filter(v => v.unidad === 1),
+  2: VOCAB.filter(v => v.unidad <= 2),
+  3: VOCAB.filter(v => v.unidad <= 3),
+  4: VOCAB.filter(v => v.unidad <= 4),
+  5: VOCAB,
 };
 const LEVEL_NAMES = {
-  1: "Level 1 · Einsteiger",
-  2: "Level 2 · Fortgeschritten",
-  3: "Level 3 · Experte",
+  1: 'Level 1 · Unidad 1',
+  2: 'Level 2 · Unidades 1–2',
+  3: 'Level 3 · Unidades 1–3',
+  4: 'Level 4 · Unidades 1–4',
+  5: 'Level 5 · Unidades 1–5',
 };
 
 let state = {
@@ -1358,13 +1770,13 @@ function checkTyping() {
   let ok;
   if (targetIsDE) {
     const target = item.de.toLowerCase();
-    const mainTarget = target.split('/')[0].trim().replace(/^(der|die|das)\s+/, '').trim();
+    const mainTarget = target.split(/[/;]/)[0].trim().replace(/^(der|die|das)\s+/, '').trim();
     const userClean = answer.replace(/^(der|die|das)\s+/, '').trim();
     ok = answer === target || answer.includes(mainTarget) || (mainTarget.includes(userClean) && userClean.length > 3);
   } else {
     const target = item.es.toLowerCase();
-    const mainTarget = target.split('/')[0].trim().replace(/^(el|la|los|las)\s+/, '').trim();
-    const userClean = answer.replace(/^(el|la|los|las)\s+/, '').trim();
+    const mainTarget = target.split(/[/;]/)[0].trim().replace(/^(el|la|los|las|¡|¿)\s*/, '').trim();
+    const userClean = answer.replace(/^(el|la|los|las|¡|¿)\s*/, '').trim();
     ok = answer === target || answer.includes(mainTarget) || (mainTarget.includes(userClean) && userClean.length > 3);
   }
   state.awaitingNext = true;
@@ -1688,7 +2100,7 @@ function startMemory() {
   goTo('memory');
 }
 
-function shortDE(str) { return str.split('/')[0].trim(); }
+function shortDE(str) { return str.split(/[/;]/)[0].trim(); }
 
 function renderMemoryGrid() {
   const grid = document.getElementById('memory-grid');
