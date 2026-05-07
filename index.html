@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skármeta Vocabulario — Q1</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d2e;
+      --surface2: #252840;
+      --border: #2e3250;
+      --accent: #58cc02;
+      --accent-dim: #3a8a01;
+      --accent2: #ce82ff;
+      --accent3: #ff9600;
+      --danger: #ff4b4b;
+      --text: #e8eaf6;
+      --text-muted: #8b93bc;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #konfetti-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    header {
+      width: 100%;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-brand { display: flex; align-items: center; gap: 10px; }
+    .header-brand svg { width: 32px; height: 32px; }
+    .header-brand h1 {
+      font-size: 1.3rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header-brand p {
+      font-size: 0.85rem; color: var(--text-muted); font-weight: 400;
+      -webkit-text-fill-color: var(--text-muted);
+    }
+    .header-stats { display: flex; gap: 16px; }
+    .stat-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 6px 14px;
+      font-size: 1rem; font-weight: 600;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-green { background: var(--accent); }
+    .dot-purple { background: var(--accent2); }
+    .dot-orange { background: var(--accent3); }
+
+    .progress-wrap {
+      width: 100%; max-width: 680px;
+      margin: 28px auto 0;
+      padding: 0 24px;
+    }
+    .progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: 0.95rem; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .progress-bar {
+      height: 10px; background: var(--surface2);
+      border-radius: 999px; overflow: hidden; border: 1px solid var(--border);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #85e620);
+      border-radius: 999px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    main {
+      width: 100%; max-width: 680px;
+      padding: 32px 24px 100px;
+      flex: 1;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* LANDING */
+    #screen-landing { text-align: center; padding-top: 24px; }
+    #screen-landing h2 { font-size: 2.4rem; font-weight: 800; margin-bottom: 10px; }
+    #screen-landing > p { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 28px; line-height: 1.6; }
+
+    .landing-qr {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 14px; margin-bottom: 32px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px 20px;
+    }
+    .landing-qr img { border-radius: 10px; }
+    .landing-qr-link {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .landing-qr-link span { font-size: 0.9rem; color: var(--text-muted); }
+    .landing-qr-link a {
+      font-size: 1.5rem; font-weight: 800; color: var(--accent);
+      text-decoration: none; letter-spacing: 0.01em;
+    }
+    .landing-qr-link a:hover { text-decoration: underline; }
+
+    .level-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-bottom: 32px;
+    }
+    .level-card {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 26px 20px;
+      cursor: pointer; transition: all 0.2s; text-align: left; position: relative; overflow: hidden;
+    }
+    .level-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    }
+    .level-card.lv1::before { background: var(--accent); }
+    .level-card.lv2::before { background: var(--accent3); }
+    .level-card.lv3::before { background: var(--danger); }
+    .level-card:hover {
+      border-color: var(--accent); transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(88,204,2,0.12);
+    }
+    .level-card .lv-badge {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .level-card .lv-name { font-size: 1.35rem; font-weight: 700; margin-bottom: 8px; }
+    .level-card .lv-desc { font-size: 1rem; color: var(--text-muted); line-height: 1.4; }
+    .level-card .lv-icon { font-size: 2.5rem; margin-bottom: 14px; }
+
+    /* MODE SELECT */
+    #screen-mode { text-align: center; }
+    .mode-title { font-size: 1.9rem; font-weight: 800; margin-bottom: 8px; }
+    .mode-sub { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
+    .mode-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px;
+    }
+    .mode-section-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 4px 0 16px; color: var(--text-muted); font-size: 0.85rem;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .mode-section-divider::before, .mode-section-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .mode-card-featured {
+      background: linear-gradient(135deg, rgba(88,204,2,0.07), rgba(206,130,255,0.07));
+      border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 28px 20px;
+      cursor: pointer; transition: all 0.2s; text-align: center; margin-bottom: 28px;
+    }
+    .mode-card-featured:hover { border-color: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(206,130,255,0.12); }
+    .mode-card-featured.selected { border-color: var(--accent2); background: rgba(206,130,255,0.1); }
+
+    /* ── DOUBLE GAME ── */
+    .double-topbar {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .double-pts { font-size: 2rem; font-weight: 900; color: var(--accent); letter-spacing: -0.02em; }
+    .double-combo {
+      background: var(--accent2); color: #fff; border-radius: 24px;
+      padding: 5px 16px; font-size: 1.05rem; font-weight: 800;
+      transition: transform 0.12s;
+    }
+    .double-combo.pop { transform: scale(1.4); }
+    .double-counter-txt { color: var(--text-muted); font-size: 0.95rem; font-weight: 600; }
+    .double-arena {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; width: 100%; margin-bottom: 12px;
+    }
+    .double-card {
+      position: relative; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .double-card-left {
+      width: 190px; height: 190px;
+      background: radial-gradient(circle at 38% 38%, #1e2540, #0d0f1a);
+      box-shadow: 0 0 0 4px var(--accent), 0 16px 48px rgba(88,204,2,0.25);
+    }
+    .double-card-right {
+      width: 268px; height: 268px;
+      background: radial-gradient(circle at 62% 38%, #221530, #0d0f1a);
+      box-shadow: 0 0 0 4px var(--accent2), 0 16px 48px rgba(206,130,255,0.25);
+    }
+    .double-word-center {
+      font-size: 1.25rem; font-weight: 800; text-align: center;
+      padding: 20px; line-height: 1.3; color: var(--text); max-width: 156px; z-index: 1;
+    }
+    .double-dir-badge {
+      position: absolute; bottom: 13%; left: 50%; transform: translateX(-50%);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); opacity: 0.9; z-index: 1;
+    }
+    .double-timer-svg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; transform: rotate(-90deg);
+    }
+    .double-timer-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 7; }
+    .double-timer-arc  { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke 0.4s; }
+    .double-option {
+      position: absolute;
+      background: var(--surface2); border: 2px solid var(--border);
+      border-radius: 14px; padding: 8px 10px;
+      font-size: 0.88rem; font-weight: 700; cursor: pointer;
+      transition: all 0.14s; max-width: 108px; text-align: center;
+      line-height: 1.25; word-break: break-word; color: var(--text); z-index: 2;
+    }
+    .double-option:hover:not(:disabled) { border-color: var(--accent2); background: rgba(206,130,255,0.13); transform: scale(1.07); }
+    .double-option.correct { border-color: var(--accent); background: rgba(88,204,2,0.2); color: var(--accent); }
+    .double-option.wrong   { border-color: var(--danger); background: rgba(255,75,75,0.16); color: var(--danger); }
+    .double-vs { font-size: 1.5rem; color: var(--text-muted); flex-shrink: 0; }
+    @keyframes dblCardIn {
+      from { opacity:0; transform: scale(0.65) rotate(-10deg); }
+      to   { opacity:1; transform: scale(1) rotate(0deg); }
+    }
+    @keyframes dblShake {
+      0%,100% { transform:translateX(0); }
+      20% { transform:translateX(-9px); } 40% { transform:translateX(9px); }
+      60% { transform:translateX(-5px); } 80% { transform:translateX(5px); }
+    }
+    .dbl-in    { animation: dblCardIn 0.38s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .dbl-shake { animation: dblShake 0.36s ease both; }
+    .mode-card {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 28px 20px;
+      cursor: pointer; transition: all 0.2s; text-align: center;
+    }
+    .mode-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .mode-card.selected { border-color: var(--accent); background: rgba(88,204,2,0.07); }
+    .mode-card .mode-icon { font-size: 2.8rem; margin-bottom: 14px; }
+    .mode-card .mode-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .mode-card .mode-desc { font-size: 1rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* FLASHCARD */
+    #screen-flash { text-align: center; }
+    .exercise-label {
+      font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px;
+    }
+    .flash-card {
+      perspective: 1000px; margin: 0 auto 28px;
+      width: 100%; height: 300px; cursor: pointer;
+    }
+    .flash-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .flash-card.flipped .flash-inner { transform: rotateY(180deg); }
+    .flash-face {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden;
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 32px;
+    }
+    .flash-face.back { transform: rotateY(180deg); background: #1c1f35; }
+    .flash-face .lang-tag {
+      font-size: 0.88rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px;
+      border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px;
+    }
+    .flash-face .word { font-size: 2.6rem; font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
+    .flash-face .context {
+      font-size: 1.05rem; color: var(--text-muted); line-height: 1.5;
+      font-style: italic; max-width: 420px;
+    }
+    .flash-face .hint-tap {
+      position: absolute; bottom: 14px;
+      font-size: 0.88rem; color: var(--text-muted);
+    }
+    .flash-face.back .category {
+      margin-top: 14px; font-size: 0.88rem; color: var(--accent2);
+      border: 1px solid var(--accent2); border-radius: 20px; padding: 4px 12px;
+    }
+    .flash-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 24px; }
+    .flash-nav button {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); border-radius: var(--radius-sm);
+      padding: 12px 28px; font-size: 1.05rem; font-weight: 600;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .flash-nav button:hover { border-color: var(--accent); color: var(--accent); }
+    .flash-counter { color: var(--text-muted); font-size: 1rem; margin-bottom: 16px; }
+
+    /* QUIZ */
+    #screen-quiz { text-align: center; }
+    .quiz-question-wrap {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 40px 32px; margin-bottom: 28px;
+    }
+    .quiz-direction {
+      font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px;
+    }
+    .quiz-word { font-size: 2.8rem; font-weight: 800; margin-bottom: 14px; }
+    .quiz-context { font-size: 1.1rem; color: var(--text-muted); font-style: italic; line-height: 1.5; }
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .option-btn {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius-sm); padding: 20px 18px;
+      font-size: 1.15rem; font-weight: 600; color: var(--text);
+      cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3;
+    }
+    .option-btn:hover:not(:disabled) { border-color: var(--accent2); background: rgba(206,130,255,0.07); }
+    .option-btn.correct { border-color: var(--accent); background: rgba(88,204,2,0.12); color: var(--accent); }
+    .option-btn.wrong { border-color: var(--danger); background: rgba(255,75,75,0.1); color: var(--danger); }
+    .option-btn:disabled { cursor: default; }
+
+    /* FEEDBACK BAR */
+    .feedback-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      z-index: 500;
+    }
+    .feedback-bar.show { transform: translateY(0); }
+    .feedback-bar.correct-bar { background: #162716; border-top: 3px solid var(--accent); }
+    .feedback-bar.wrong-bar { background: #2e1111; border-top: 3px solid var(--danger); }
+    .feedback-content { display: flex; align-items: center; gap: 14px; }
+    .feedback-icon { font-size: 2.2rem; }
+    .feedback-text h3 { font-size: 1.25rem; font-weight: 700; }
+    .feedback-text p { font-size: 1rem; color: var(--text-muted); margin-top: 4px; }
+    .feedback-bar.correct-bar .feedback-text h3 { color: var(--accent); }
+    .feedback-bar.wrong-bar .feedback-text h3 { color: var(--danger); }
+    .feedback-next-btn {
+      background: var(--accent); color: #000; border: none;
+      border-radius: var(--radius-sm); padding: 14px 32px;
+      font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: background 0.15s;
+    }
+    .feedback-next-btn:hover { background: #6ee803; }
+    .feedback-bar.wrong-bar .feedback-next-btn { background: var(--danger); color: #fff; }
+
+    /* RESULTS */
+    #screen-results { text-align: center; padding-top: 20px; }
+    .result-trophy {
+      font-size: 5rem; margin-bottom: 16px; display: block;
+      animation: bounceIn 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
+    }
+    @keyframes bounceIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .result-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+    .result-subtitle { color: var(--text-muted); margin-bottom: 32px; font-size: 1.1rem; }
+    .result-score-ring {
+      width: 160px; height: 160px; margin: 0 auto 28px; position: relative;
+    }
+    .result-score-ring svg { transform: rotate(-90deg); }
+    .result-score-ring .score-text {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .result-score-ring .score-pct { font-size: 2.5rem; font-weight: 800; }
+    .result-score-ring .score-lbl { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
+    .result-stats-row { display: flex; justify-content: center; gap: 32px; margin-bottom: 32px; }
+    .result-stat { text-align: center; }
+    .result-stat .val { font-size: 2rem; font-weight: 800; }
+    .result-stat .lbl { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
+    .val.green { color: var(--accent); }
+    .val.red { color: var(--danger); }
+    .val.purple { color: var(--accent2); }
+    .result-msg {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 24px;
+      font-size: 1.1rem; line-height: 1.7; margin-bottom: 28px;
+      color: var(--text-muted); text-align: left;
+    }
+    .result-msg strong { color: var(--text); }
+
+    .btn-primary {
+      background: var(--accent); color: #000; border: none;
+      border-radius: var(--radius-sm); padding: 16px 40px;
+      font-size: 1.15rem; font-weight: 800; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #6ee803; }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      border: 2px solid var(--border); border-radius: var(--radius-sm);
+      padding: 15px 32px; font-size: 1.1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.15s; margin-left: 12px;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .streak-popup {
+      position: fixed; top: 80px; right: 24px;
+      background: var(--surface2); border: 2px solid var(--accent3);
+      border-radius: var(--radius-sm); padding: 12px 20px;
+      font-size: 1rem; font-weight: 700; color: var(--accent3);
+      z-index: 800; opacity: 0; transform: translateX(60px);
+      transition: all 0.35s;
+    }
+    .streak-popup.show { opacity: 1; transform: translateX(0); }
+
+    .hearts { display: flex; gap: 4px; }
+    .heart { font-size: 1.1rem; }
+
+    .typing-wrap { margin-bottom: 20px; }
+    .typing-input {
+      width: 100%; background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius-sm); padding: 18px 20px;
+      font-size: 1.35rem; font-weight: 600; color: var(--text);
+      outline: none; transition: border-color 0.15s;
+    }
+    .typing-input:focus { border-color: var(--accent2); }
+    .typing-input.correct { border-color: var(--accent); }
+    .typing-input.wrong { border-color: var(--danger); }
+    .typing-hint { font-size: 1rem; color: var(--text-muted); margin-top: 10px; text-align: left; }
+    .check-btn {
+      width: 100%; background: var(--accent2); color: #fff; border: none;
+      border-radius: var(--radius-sm); padding: 16px;
+      font-size: 1.15rem; font-weight: 700; cursor: pointer; transition: background 0.15s; margin-top: 12px;
+    }
+    .check-btn:hover { background: #b56ae0; }
+    .check-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .reward-banner {
+      background: linear-gradient(135deg, #0e2200, #180930);
+      border: 2px solid var(--accent); border-radius: var(--radius);
+      padding: 24px; margin-bottom: 24px; text-align: center; display: none;
+    }
+    .reward-banner.show { display: block; animation: fadeSlideIn 0.5s; }
+    @keyframes fadeSlideIn {
+      from { opacity:0; transform: translateY(-16px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .reward-banner .reward-stars { font-size: 2rem; margin-bottom: 10px; }
+    .reward-banner h3 { font-size: 1.4rem; font-weight: 800; color: var(--accent); }
+    .reward-banner p { font-size: 1rem; color: var(--text-muted); margin-top: 6px; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-muted); font-size: 1rem; font-weight: 600;
+      cursor: pointer; margin-bottom: 24px; transition: color 0.15s;
+      background: none; border: none;
+    }
+    .back-link:hover { color: var(--text); }
+
+    @media (max-width: 540px) {
+      .options-grid { grid-template-columns: 1fr; }
+      header { padding: 12px 16px; }
+      .header-stats { gap: 8px; }
+      #screen-landing h2 { font-size: 1.9rem; }
+      .quiz-word { font-size: 2.2rem; }
+      .flash-face .word { font-size: 2rem; }
+      .landing-qr-link a { font-size: 1.25rem; }
+    }
+
+    /* VERB CONJUGATION */
+    #screen-verb { text-align: center; }
+    .verb-card {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 36px 32px; margin-bottom: 24px;
+      text-align: left;
+    }
+    .verb-badges { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .verb-badge {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; border-radius: 20px; padding: 5px 14px;
+    }
+    .verb-badge.tense { background: rgba(88,204,2,0.12); color: var(--accent); border: 1px solid var(--accent); }
+    .verb-badge.person { background: rgba(206,130,255,0.12); color: var(--accent2); border: 1px solid var(--accent2); }
+    .verb-inf { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+    .verb-subject { font-size: 1rem; color: var(--text-muted); margin-bottom: 20px; }
+    .verb-sentence { font-size: 1.3rem; line-height: 1.7; color: var(--text); font-style: italic; }
+    .verb-sentence .gap {
+      display: inline-block; background: var(--surface2);
+      border-bottom: 3px solid var(--accent2); color: var(--accent2);
+      font-style: normal; font-weight: 800; padding: 2px 14px;
+      border-radius: 4px; min-width: 90px; text-align: center;
+    }
+
+    /* MEMORY */
+    #screen-memory { text-align: center; }
+    .mem-stats-row {
+      display: flex; justify-content: center; gap: 14px;
+      font-size: 1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 20px;
+    }
+    .mem-stats-row span {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 5px 16px;
+    }
+    .memory-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; margin: 0 auto; max-width: 560px;
+    }
+    .mem-card { height: 120px; cursor: pointer; perspective: 800px; }
+    .mem-inner {
+      width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+    .mem-card.flipped .mem-inner,
+    .mem-card.matched .mem-inner { transform: rotateY(180deg); }
+    .mem-front, .mem-back {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; padding: 8px; text-align: center; line-height: 1.3;
+    }
+    .mem-front { background: var(--surface2); border: 2px solid var(--border); font-size: 1.8rem; }
+    .mem-back { transform: rotateY(180deg); font-size: 0.78rem; }
+    .mem-back.es { background: var(--surface); border: 2px solid var(--accent2); color: var(--accent2); }
+    .mem-back.de { background: var(--surface); border: 2px solid var(--accent3); color: var(--text); font-size: 0.72rem; }
+    .mem-card.matched .mem-back { background: rgba(88,204,2,0.1); border-color: var(--accent); color: var(--accent); }
+    .mem-card.wrong-flash .mem-back { border-color: var(--danger); background: rgba(255,75,75,0.08); color: var(--danger); }
+    .mem-win {
+      margin-top: 24px; background: var(--surface); border: 2px solid var(--accent);
+      border-radius: var(--radius); padding: 28px; display: none;
+    }
+    .mem-win.show { display: block; animation: fadeSlideIn 0.4s; }
+    .mem-win h3 { font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+    .mem-win p { font-size: 1rem; color: var(--text-muted); margin-bottom: 20px; }
+    @media (max-width: 540px) {
+      .memory-grid { gap: 6px; }
+      .mem-card { height: 80px; }
+      .mem-back, .mem-back.de { font-size: 0.6rem; }
+      .mem-front { font-size: 1.3rem; }
+    }
+
+    /* RACE GAME */
+    #screen-race { text-align: center; }
+    #race-canvas {
+      width: 100%; max-width: 632px; height: 180px;
+      border-radius: var(--radius); border: 2px solid var(--border);
+      display: block; margin: 0 auto 14px;
+    }
+    .race-match-area { max-width: 560px; margin: 0 auto; }
+    .race-feedback {
+      min-height: 28px; font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .race-pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .race-col { display: flex; flex-direction: column; gap: 8px; }
+    .race-word-btn {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius-sm); padding: 12px 14px;
+      font-size: 1rem; font-weight: 600; color: var(--text);
+      cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3;
+    }
+    .race-word-btn:hover:not(:disabled) { border-color: var(--accent2); background: rgba(206,130,255,0.08); }
+    .race-word-btn.selected { border-color: var(--accent2); background: rgba(206,130,255,0.15); color: var(--accent2); }
+    .race-word-btn.correct { border-color: var(--accent); background: rgba(88,204,2,0.12); color: var(--accent); cursor: default; }
+    .race-word-btn.wrong { border-color: var(--danger); background: rgba(255,75,75,0.1); animation: raceWrong 0.4s; }
+    .race-round-info { font-size: 0.95rem; color: var(--text-muted); margin-top: 12px; font-weight: 600; }
+    @keyframes raceWrong {
+      0%,100% { transform: translateX(0); }
+      25%,75% { transform: translateX(-7px); }
+      50% { transform: translateX(7px); }
+    }
+
+    /* ASTEROID GAME */
+    #screen-asteroids { text-align: center; }
+    .ast-score-wrap { max-width: 460px; margin: 0 auto 14px; }
+    .ast-score-bar {
+      height: 14px; background: var(--surface2);
+      border-radius: 999px; overflow: hidden; border: 1px solid var(--border);
+    }
+    .ast-score-bar-fill {
+      height: 100%; border-radius: 999px; width: 0%;
+      background: linear-gradient(90deg, var(--accent), #85e620);
+      transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .ast-score-num {
+      font-size: 1rem; font-weight: 700; color: var(--text-muted);
+      margin-top: 6px; display: flex; justify-content: space-between;
+    }
+    #ast-canvas {
+      width: 100%; max-width: 632px; height: 340px;
+      border-radius: var(--radius); border: 2px solid var(--border);
+      display: block; margin: 0 auto; transition: transform 0.08s;
+    }
+    .ast-target-word {
+      font-size: 1.05rem; color: var(--text-muted); margin: 12px 0 10px;
+      min-height: 26px; font-weight: 600;
+    }
+    .ast-target-word strong { color: var(--accent2); font-size: 1.2rem; }
+    .ast-input-wrap { display: flex; gap: 10px; align-items: center; max-width: 560px; margin: 0 auto; }
+    .ast-input-wrap input {
+      flex: 1; background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 18px;
+      font-size: 1.2rem; font-weight: 600; color: var(--text);
+      outline: none; transition: border-color 0.15s;
+    }
+    .ast-input-wrap input:focus { border-color: var(--accent2); }
+    .ast-input-wrap input.ast-wrong { animation: astShake 0.45s; border-color: var(--danger); }
+    .ast-submit-btn {
+      background: var(--accent); color: #000; border: none;
+      border-radius: var(--radius-sm); padding: 14px 26px;
+      font-size: 1.2rem; font-weight: 800; cursor: pointer; transition: background 0.15s;
+    }
+    .ast-submit-btn:hover { background: #6ee803; }
+    .ast-star-ctrl { display: inline-flex; align-items: center; gap: 2px; }
+    .ast-star {
+      cursor: pointer; font-size: 1.1rem; opacity: 0.25;
+      transition: opacity 0.15s, transform 0.1s;
+      user-select: none;
+    }
+    .ast-star:hover { transform: scale(1.25); }
+    .ast-star.on { opacity: 1; }
+    @keyframes astShake {
+      0%,100% { transform: translateX(0); }
+      20%,60% { transform: translateX(-8px); }
+      40%,80% { transform: translateX(8px); }
+    }
+
+    /* LIGHT THEME */
+    [data-theme="light"] {
+      --bg: #f5f7fa;
+      --surface: #ffffff;
+      --surface2: #eef0f6;
+      --border: #cdd2e8;
+      --text: #1a1d2e;
+      --text-muted: #616887;
+    }
+    [data-theme="light"] body { background: var(--bg); color: var(--text); }
+    [data-theme="light"] header svg circle { fill: #eef0f6; stroke: #cdd2e8; }
+    [data-theme="light"] .flash-face.back { background: #e8ecf8; }
+    [data-theme="light"] .feedback-bar.correct-bar { background: #e6f9d8; }
+    [data-theme="light"] .feedback-bar.wrong-bar { background: #fde8e8; }
+    [data-theme="light"] .reward-banner { background: linear-gradient(135deg, #d8f5c0, #ecdcff); }
+    [data-theme="light"] .typing-input { color: var(--text); }
+
+    /* THEME TOGGLE BTN */
+    .theme-btn {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 6px 12px;
+      font-size: 1.2rem; cursor: pointer; transition: all 0.2s;
+      line-height: 1;
+    }
+    .theme-btn:hover { border-color: var(--accent); transform: scale(1.1); }
+  </style>
+</head>
+<body>
+
+<canvas id="konfetti-canvas"></canvas>
+
+<header>
+  <div class="header-brand">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="15" fill="#1a1d2e" stroke="#2e3250" stroke-width="1.5"/>
+      <text x="16" y="21" text-anchor="middle" font-size="14" font-weight="800"
+            font-family="Georgia, serif" fill="url(#lg)">S</text>
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#58cc02"/>
+          <stop offset="100%" stop-color="#ce82ff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div>
+      <h1>Skármeta Vokabular</h1>
+      <p>La realidad chilena · Q1 Jahrgangsstufe 12</p>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="stat-chip">
+      <span class="dot dot-orange"></span>
+      <span id="stat-streak">0</span>&nbsp;🔥
+    </div>
+    <div class="stat-chip hearts" id="hearts-display">
+      <span class="heart">❤️</span>
+      <span class="heart">❤️</span>
+      <span class="heart">❤️</span>
+    </div>
+    <div class="stat-chip">
+      <span class="dot dot-purple"></span>
+      <span id="stat-xp">0</span>&nbsp;XP
+    </div>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Tema claro/oscuro">🌙</button>
+  </div>
+</header>
+
+<div class="progress-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-meta">
+    <span id="prog-label">Frage 0 von 0</span>
+    <span id="prog-pct">0%</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<main>
+
+  <!-- LANDING -->
+  <div id="screen-landing" class="screen active">
+    <h2>Bienvenidos al Vocabulario</h2>
+    <p>Begriffe aus <em>La realidad chilena en la literatura de Antonio Skármeta</em>.<br>
+       Wähle dein Level und starte die Übung.</p>
+
+    <div class="landing-qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://albecabrera.github.io/antonio_skarmenta/&color=58cc02&bgcolor=1a1d2e&margin=12"
+           alt="QR Code zum Spiel" width="160" height="160">
+      <div class="landing-qr-link">
+        <span>Kurzlink zum Spiel:</span>
+        <a href="https://tinyurl.com/2d8762ey" target="_blank">tinyurl.com/2d8762ey</a>
+      </div>
+    </div>
+
+    <div class="level-grid">
+      <div class="level-card lv1" onclick="selectLevel(1)">
+        <div class="lv-icon">📖</div>
+        <div class="lv-badge">Level 1</div>
+        <div class="lv-name">Einsteiger</div>
+        <div class="lv-desc">Kernvokabular: Politik & Gesellschaft. Karteikarten + Multiple Choice.</div>
+      </div>
+      <div class="level-card lv2" onclick="selectLevel(2)">
+        <div class="lv-icon">✍️</div>
+        <div class="lv-badge">Level 2</div>
+        <div class="lv-name">Fortgeschritten</div>
+        <div class="lv-desc">Literatur & Metaphern. Tippeingabe ohne Hilfe.</div>
+      </div>
+      <div class="level-card lv3" onclick="selectLevel(3)">
+        <div class="lv-icon">🎓</div>
+        <div class="lv-badge">Level 3</div>
+        <div class="lv-name">Experte</div>
+        <div class="lv-desc">Alle Begriffe gemischt, alle Modi, ohne Limite.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODE SELECT -->
+  <div id="screen-mode" class="screen">
+    <button class="back-link" onclick="goTo('landing')">← Zurück</button>
+    <div class="mode-title" id="mode-title">Level 1 · Einsteiger</div>
+    <div class="mode-sub">Wähle die Übungsart:</div>
+    <div class="mode-grid">
+      <div class="mode-card" id="mode-flash" onclick="selectMode('flash')">
+        <div class="mode-icon">🃏</div>
+        <div class="mode-name">Karteikarten</div>
+        <div class="mode-desc">Spanisch ↔ Deutsch. Karte umdrehen und einprägen.</div>
+      </div>
+      <div class="mode-card" id="mode-mc-es-de" onclick="selectMode('mc-es-de')">
+        <div class="mode-icon">🇪🇸→🇩🇪</div>
+        <div class="mode-name">Spanisch → Deutsch</div>
+        <div class="mode-desc">Wähle die richtige deutsche Übersetzung.</div>
+      </div>
+      <div class="mode-card" id="mode-mc-de-es" onclick="selectMode('mc-de-es')">
+        <div class="mode-icon">🇩🇪→🇪🇸</div>
+        <div class="mode-name">Deutsch → Spanisch</div>
+        <div class="mode-desc">Wähle die richtige spanische Übersetzung.</div>
+      </div>
+      <div class="mode-card" id="mode-type" onclick="selectMode('type')">
+        <div class="mode-icon">⌨️</div>
+        <div class="mode-name">Eintippen</div>
+        <div class="mode-desc">Schreibe die Übersetzung ohne Auswahlhilfe.</div>
+      </div>
+      <div class="mode-card" id="mode-verb" onclick="selectMode('verb')">
+        <div class="mode-icon">🔤</div>
+        <div class="mode-name">Verbkonjugation</div>
+        <div class="mode-desc">Konjugiere Verben im Kontext. Pres. · Pret. Indef. · Imperfecto.</div>
+      </div>
+      <div class="mode-card" id="mode-memory" onclick="selectMode('memory')">
+        <div class="mode-icon">🧩</div>
+        <div class="mode-name">Memory</div>
+        <div class="mode-desc">Finde alle Paare: Spanisch ↔ Deutsch. 8 Paare, 16 Karten.</div>
+      </div>
+      <div class="mode-card" id="mode-asteroids" onclick="selectMode('asteroids')">
+        <div class="mode-icon">☄️</div>
+        <div class="mode-name">Asteroiden</div>
+        <div class="mode-desc">Übersetze Wörter bevor der Asteroid trifft. Erreiche 10 Punkte!</div>
+      </div>
+      <div class="mode-card" id="mode-race" onclick="selectMode('race')">
+        <div class="mode-icon">🏎️</div>
+        <div class="mode-name">Autorennen</div>
+        <div class="mode-desc">Verknüpfe Wortpaare richtig und bring dein Auto ins Ziel!</div>
+      </div>
+    </div>
+    <div class="mode-section-divider">Herausforderung</div>
+    <div class="mode-card-featured" id="mode-double" onclick="selectMode('double')">
+      <div class="mode-icon">🔀</div>
+      <div class="mode-name">Double</div>
+      <div class="mode-desc">Tippe die Übersetzung — Richtung wechselt zufällig pro Frage: ES→DE und DE→ES.</div>
+    </div>
+    <button class="btn-primary" onclick="startExercise()">Starten →</button>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div id="screen-flash" class="screen">
+    <button class="back-link" onclick="goTo('mode')">← Zurück</button>
+    <div class="exercise-label">Karteikarten · <span id="flash-level-label"></span></div>
+    <div class="flash-card" id="flash-card" onclick="flipCard()">
+      <div class="flash-inner">
+        <div class="flash-face front">
+          <span class="lang-tag">Español</span>
+          <div class="word" id="flash-front-word"></div>
+          <div class="context" id="flash-front-ctx"></div>
+          <span class="hint-tap">Tippen zum Umdrehen</span>
+        </div>
+        <div class="flash-face back">
+          <span class="lang-tag">Deutsch</span>
+          <div class="word" id="flash-back-word"></div>
+          <div class="context" id="flash-back-ctx"></div>
+          <div class="category" id="flash-category"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flash-counter" id="flash-counter">1 / 20</div>
+    <div class="flash-nav">
+      <button onclick="flashPrev()">← Zurück</button>
+      <button onclick="flashNext()">Weiter →</button>
+    </div>
+    <button class="btn-primary" onclick="goTo('mode')" style="margin-top:8px">Quiz starten →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <button class="back-link" onclick="goTo('mode')">← Abbrechen</button>
+    <div class="exercise-label" id="quiz-exercise-label"></div>
+    <div class="quiz-question-wrap">
+      <div class="quiz-direction" id="quiz-direction"></div>
+      <div class="quiz-word" id="quiz-word"></div>
+      <div class="quiz-context" id="quiz-context"></div>
+    </div>
+    <div id="mc-options" class="options-grid"></div>
+    <div id="typing-section" class="typing-wrap" style="display:none">
+      <input type="text" class="typing-input" id="typing-input"
+             placeholder="Übersetzung eintippen…"
+             onkeydown="if(event.key==='Enter')checkTyping()" />
+      <div class="typing-hint" id="typing-hint"></div>
+      <button class="check-btn" id="check-btn" onclick="checkTyping()">Überprüfen</button>
+    </div>
+  </div>
+
+  <!-- VERB CONJUGATION -->
+  <div id="screen-verb" class="screen">
+    <button class="back-link" onclick="goTo('mode')">← Abbrechen</button>
+    <div class="exercise-label">Verbkonjugation · <span id="verb-level-label"></span></div>
+    <div class="verb-card">
+      <div class="verb-badges">
+        <span class="verb-badge tense" id="verb-tense"></span>
+        <span class="verb-badge person" id="verb-person"></span>
+      </div>
+      <div class="verb-inf" id="verb-inf"></div>
+      <div class="verb-subject">Sujeto: <strong id="verb-subject"></strong></div>
+      <div class="verb-sentence" id="verb-sentence"></div>
+    </div>
+    <div class="typing-wrap">
+      <input type="text" class="typing-input" id="verb-input"
+             placeholder="Konjugierte Form eintippen…"
+             onkeydown="if(event.key==='Enter')checkVerb()" />
+      <div class="typing-hint" id="verb-hint"></div>
+      <button class="check-btn" id="verb-check-btn" onclick="checkVerb()">Überprüfen</button>
+    </div>
+    <div class="flash-counter" id="verb-counter">1 / 15</div>
+  </div>
+
+  <!-- MEMORY -->
+  <div id="screen-memory" class="screen">
+    <button class="back-link" onclick="goTo('mode')">← Abbrechen</button>
+    <div class="exercise-label">Memory · <span id="mem-level-label"></span></div>
+    <div class="mem-stats-row">
+      <span id="mem-pairs">0 / 8 Paare</span>
+      <span id="mem-moves">0 Züge</span>
+    </div>
+    <div class="memory-grid" id="memory-grid"></div>
+    <div class="mem-win" id="mem-win">
+      <h3>🏆 Alle Paare gefunden!</h3>
+      <p id="mem-win-msg"></p>
+      <button class="btn-primary" onclick="startMemory()">Nochmal →</button>
+      <button class="btn-secondary" onclick="goTo('mode')">Zurück</button>
+    </div>
+  </div>
+
+  <!-- RACE GAME -->
+  <div id="screen-race" class="screen">
+    <button class="back-link" onclick="stopRaceGame(); goTo('mode')">← Abbrechen</button>
+    <div class="exercise-label">🏎️ Autorennen · <span id="race-level-label"></span></div>
+    <canvas id="race-canvas" width="632" height="180"></canvas>
+    <div class="race-match-area">
+      <div class="race-feedback" id="race-feedback">&nbsp;</div>
+      <div class="race-pairs">
+        <div class="race-col" id="race-col-left"></div>
+        <div class="race-col" id="race-col-right"></div>
+      </div>
+      <div class="race-round-info" id="race-round-info">Runde 1 / 6</div>
+    </div>
+  </div>
+
+  <!-- ASTEROID GAME -->
+  <div id="screen-asteroids" class="screen">
+    <button class="back-link" onclick="stopAsteroidGame(); goTo('mode')">← Abbrechen</button>
+    <div class="exercise-label">☄️ Asteroiden · <span id="ast-level-label"></span></div>
+    <div class="ast-score-wrap">
+      <div class="ast-score-bar"><div class="ast-score-bar-fill" id="ast-score-fill"></div></div>
+      <div class="ast-score-num">
+        <span id="ast-score-num">0 / 10</span>
+        <span class="ast-star-ctrl">
+          Geschwindigkeit:
+          <span class="ast-star" id="ast-star-1" onclick="astSetSpeed(1)" title="Langsam (~15s)">⭐</span>
+          <span class="ast-star" id="ast-star-2" onclick="astSetSpeed(2)" title="Mittel (~10s)">⭐</span>
+          <span class="ast-star" id="ast-star-3" onclick="astSetSpeed(3)" title="Schnell (~6s)">⭐</span>
+        </span>
+      </div>
+    </div>
+    <canvas id="ast-canvas" width="632" height="340"></canvas>
+    <div class="ast-target-word" id="ast-target-word">Lade…</div>
+    <div class="ast-input-wrap">
+      <input type="text" id="ast-input" placeholder="Übersetzung eintippen…"
+             onkeydown="if(event.key==='Enter')submitAsteroid()" autocomplete="off" />
+      <button class="ast-submit-btn" onclick="submitAsteroid()">→</button>
+    </div>
+  </div>
+
+  <!-- DOUBLE GAME -->
+  <div id="screen-double" class="screen">
+    <button class="back-link" onclick="stopDouble(); goTo('mode')">← Abbrechen</button>
+    <div class="exercise-label">🔀 Double · <span id="double-level-label"></span></div>
+    <div class="double-topbar">
+      <div class="double-pts" id="double-pts">0</div>
+      <div class="double-combo" id="double-combo">×1</div>
+      <div class="double-counter-txt" id="double-counter">1 / 15</div>
+    </div>
+    <div class="double-arena">
+      <div class="double-card double-card-left" id="double-card-left">
+        <svg class="double-timer-svg" viewBox="0 0 190 190">
+          <circle class="double-timer-track" cx="95" cy="95" r="87"/>
+          <circle class="double-timer-arc"  id="double-timer-arc" cx="95" cy="95" r="87"/>
+        </svg>
+        <div class="double-word-center" id="double-word-src"></div>
+        <div class="double-dir-badge" id="double-dir-badge">ES → DE</div>
+      </div>
+      <div class="double-vs">⚡</div>
+      <div class="double-card double-card-right" id="double-card-right"></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="reward-banner" id="reward-banner">
+      <div class="reward-stars">⭐⭐⭐</div>
+      <h3>Excelente — Nivel superado!</h3>
+      <p>Du hast über 70% erreicht. Weiter so!</p>
+    </div>
+    <span class="result-trophy" id="result-trophy">🎉</span>
+    <div class="result-title" id="result-title">Übung abgeschlossen!</div>
+    <div class="result-subtitle" id="result-subtitle">Hier ist deine Auswertung:</div>
+    <div class="result-score-ring">
+      <svg width="150" height="150" viewBox="0 0 150 150">
+        <circle cx="75" cy="75" r="60" fill="none" stroke="#1a1d2e" stroke-width="14"/>
+        <circle id="score-ring" cx="75" cy="75" r="60" fill="none"
+                stroke="#58cc02" stroke-width="14"
+                stroke-dasharray="377" stroke-dashoffset="377"
+                stroke-linecap="round"
+                style="transition: stroke-dashoffset 1s ease"/>
+      </svg>
+      <div class="score-text">
+        <span class="score-pct" id="score-pct">0%</span>
+        <span class="score-lbl">Ergebnis</span>
+      </div>
+    </div>
+    <div class="result-stats-row">
+      <div class="result-stat">
+        <div class="val green" id="res-correct">0</div>
+        <div class="lbl">Richtig</div>
+      </div>
+      <div class="result-stat">
+        <div class="val red" id="res-wrong">0</div>
+        <div class="lbl">Falsch</div>
+      </div>
+      <div class="result-stat">
+        <div class="val purple" id="res-xp">+0</div>
+        <div class="lbl">XP verdient</div>
+      </div>
+    </div>
+    <div class="result-msg" id="result-msg"></div>
+    <div>
+      <button class="btn-primary" onclick="restartSameMode()">Nochmal →</button>
+      <button class="btn-secondary" onclick="goTo('landing')">Levels</button>
+    </div>
+  </div>
+
+</main>
+
+<div class="feedback-bar" id="feedback-bar">
+  <div class="feedback-content">
+    <span class="feedback-icon" id="fb-icon">✅</span>
+    <div class="feedback-text">
+      <h3 id="fb-title">Richtig!</h3>
+      <p id="fb-detail"></p>
+    </div>
+  </div>
+  <button class="feedback-next-btn" id="fb-next-btn" onclick="nextQuestion()">Weiter</button>
+</div>
+
+<div class="streak-popup" id="streak-popup">🔥 <span id="streak-popup-count">3</span> in Folge!</div>
+
+<script>
+const VOCAB = [
+  { es: "la dictadura",        de: "die Diktatur",                               ctx_es: "Unter Pinochets Diktatur wurden Tausende verfolgt.",       ctx_de: "Pinochet etablierte eine brutale Diktatur.",               cat: "Politik" },
+  { es: "el golpe de estado",  de: "der Staatsstreich / der Putsch",             ctx_es: "El golpe de estado de 1973 cambió Chile para siempre.",   ctx_de: "Der Putsch von 1973 veränderte Chile für immer.",          cat: "Politik" },
+  { es: "el exilio",           de: "das Exil",                                   ctx_es: "Muchos artistas vivieron en el exilio.",                   ctx_de: "Viele Künstler lebten im Exil.",                           cat: "Politik" },
+  { es: "la represión",        de: "die Unterdrückung / die Repression",         ctx_es: "La represión silenciaba toda voz crítica.",               ctx_de: "Die Repression erstickte jede kritische Stimme.",          cat: "Politik" },
+  { es: "el desaparecido",     de: "der/die Verschwundene",                      ctx_es: "Los desaparecidos nunca regresaron.",                     ctx_de: "Die Verschwundenen kehrten nie zurück.",                   cat: "Politik" },
+  { es: "la resistencia",      de: "der Widerstand",                             ctx_es: "La resistencia popular no se rindió.",                    ctx_de: "Der Volkswidertand gab nicht auf.",                        cat: "Politik" },
+  { es: "el toque de queda",   de: "die Ausgangssperre",                         ctx_es: "El toque de queda impedía salir de noche.",               ctx_de: "Die Ausgangssperre verhinderte nächtliche Aktivitäten.",   cat: "Politik" },
+  { es: "la censura",          de: "die Zensur",                                 ctx_es: "La censura eliminó libros y canciones.",                  ctx_de: "Die Zensur vernichtete Bücher und Lieder.",                cat: "Politik" },
+  { es: "el régimen",          de: "das Regime",                                 ctx_es: "El régimen militar controlaba todo.",                     ctx_de: "Das Militärregime kontrollierte alles.",                   cat: "Politik" },
+  { es: "la junta militar",    de: "die Militärjunta",                           ctx_es: "La junta militar tomó el poder en 1973.",                 ctx_de: "Die Militärjunta übernahm 1973 die Macht.",                cat: "Politik" },
+  { es: "la solidaridad",      de: "die Solidarität",                            ctx_es: "La solidaridad entre vecinos fue esencial.",              ctx_de: "Die Solidarität unter Nachbarn war wesentlich.",           cat: "Gesellschaft" },
+  { es: "la pobreza",          de: "die Armut",                                  ctx_es: "La pobreza marcó la vida de los personajes.",             ctx_de: "Armut prägte das Leben der Figuren.",                     cat: "Gesellschaft" },
+  { es: "la esperanza",        de: "die Hoffnung",                               ctx_es: "A pesar de todo, guardaban la esperanza.",                ctx_de: "Trotz allem bewahrten sie die Hoffnung.",                 cat: "Gesellschaft" },
+  { es: "el miedo",            de: "die Angst / die Furcht",                     ctx_es: "El miedo era el arma más poderosa del régimen.",          ctx_de: "Angst war die mächtigste Waffe des Regimes.",             cat: "Gesellschaft" },
+  { es: "la memoria colectiva",de: "das kollektive Gedächtnis",                  ctx_es: "La literatura preserva la memoria colectiva.",            ctx_de: "Die Literatur bewahrt das kollektive Gedächtnis.",         cat: "Gesellschaft" },
+  { es: "la identidad nacional",de: "die nationale Identität",                   ctx_es: "Skármeta explora la identidad nacional chilena.",          ctx_de: "Skármeta erkundet die chilenische nationale Identität.",   cat: "Gesellschaft" },
+  { es: "el pueblo",           de: "das Volk / die Gemeinde",                    ctx_es: "El pueblo resistió a pesar del terror.",                  ctx_de: "Das Volk widerstand trotz des Terrors.",                  cat: "Gesellschaft" },
+  { es: "el testimonio",       de: "das Zeugnis / der Bericht",                  ctx_es: "Su testimonio dejó huella en la historia.",               ctx_de: "Sein Zeugnis hinterließ Spuren in der Geschichte.",        cat: "Gesellschaft" },
+  { es: "el narrador",         de: "der Erzähler",                               ctx_es: "El narrador es testigo de los hechos.",                   ctx_de: "Der Erzähler ist Zeuge der Ereignisse.",                  cat: "Literatur" },
+  { es: "la metáfora",         de: "die Metapher",                               ctx_es: "Usa la metáfora del fútbol para hablar de libertad.",     ctx_de: "Er benutzt die Fußballmetapher für Freiheit.",             cat: "Literatur" },
+  { es: "el compromiso político", de: "das politische Engagement",               ctx_es: "Skármeta muestra un fuerte compromiso político.",         ctx_de: "Skármeta zeigt starkes politisches Engagement.",          cat: "Literatur" },
+  { es: "la voz narrativa",    de: "die Erzählerstimme",                         ctx_es: "La voz narrativa es cercana al lector.",                  ctx_de: "Die Erzählerstimme ist dem Leser nah.",                   cat: "Literatur" },
+  { es: "el realismo mágico",  de: "der magische Realismus",                     ctx_es: "El realismo mágico mezcla lo cotidiano y lo fantástico.", ctx_de: "Der magische Realismus mischt Alltag und Fantastisches.", cat: "Literatur" },
+  { es: "el protagonista",     de: "der Protagonist / die Hauptfigur",           ctx_es: "El protagonista busca su identidad.",                     ctx_de: "Der Protagonist sucht seine Identität.",                  cat: "Literatur" },
+  { es: "la trama",            de: "die Handlung / der Plot",                    ctx_es: "La trama se desarrolla en Santiago.",                     ctx_de: "Die Handlung spielt sich in Santiago ab.",                cat: "Literatur" },
+  { es: "el símbolo",          de: "das Symbol",                                 ctx_es: "El cartero es símbolo de conexión humana.",               ctx_de: "Der Briefträger ist ein Symbol menschlicher Verbindung.", cat: "Literatur" },
+  { es: "la Unidad Popular",   de: "die Volkseinheit (linkes Wahlbündnis)",      ctx_es: "La UP fue derrocada en 1973.",                            ctx_de: "Die Volkseinheit wurde 1973 gestürzt.",                   cat: "Chile" },
+  { es: "el Estadio Nacional", de: "das Nationalstadion (als Lager genutzt)",    ctx_es: "El Estadio Nacional fue usado como centro de detención.", ctx_de: "Das Nationalstadion wurde als Haftlager genutzt.",        cat: "Chile" },
+  { es: "la DINA",             de: "die DINA (Geheimpolizei Pinochets)",          ctx_es: "La DINA perseguía a los opositores.",                     ctx_de: "Die DINA verfolgte die Oppositionellen.",                  cat: "Chile" },
+  { es: "la Nueva Canción Chilena", de: "der Neue Chilenische Gesang",           ctx_es: "Víctor Jara fue símbolo de la Nueva Canción Chilena.",    ctx_de: "Víctor Jara war Symbol des Neuen Chilenischen Gesangs.", cat: "Chile" },
+];
+
+const LEVEL_SETS = {
+  1: VOCAB.slice(0, 15),
+  2: VOCAB.slice(10, 27),
+  3: VOCAB,
+};
+const LEVEL_NAMES = {
+  1: "Level 1 · Einsteiger",
+  2: "Level 2 · Fortgeschritten",
+  3: "Level 3 · Experte",
+};
+
+let state = {
+  level: 1, mode: null,
+  currentSet: [],
+  flashIndex: 0,
+  quizItems: [], qIndex: 0,
+  correct: 0, wrong: 0,
+  lives: 3, streak: 0, xp: 0,
+  totalXP: 0,
+  awaitingNext: false,
+};
+
+function goTo(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.getElementById('progress-wrap').style.display = name === 'quiz' ? 'block' : 'none';
+  hideFeedback();
+}
+
+function selectLevel(lv) {
+  state.level = lv;
+  state.currentSet = [...LEVEL_SETS[lv]];
+  document.getElementById('mode-title').textContent = LEVEL_NAMES[lv];
+  selectedMode = null;
+  document.querySelectorAll('.mode-card, .mode-card-featured').forEach(c => c.classList.remove('selected'));
+  goTo('mode');
+}
+
+let selectedMode = null;
+function selectMode(m) {
+  selectedMode = m;
+  document.querySelectorAll('.mode-card, .mode-card-featured').forEach(c => c.classList.remove('selected'));
+  document.getElementById('mode-' + m).classList.add('selected');
+}
+
+function startExercise() {
+  if (!selectedMode) selectMode('mc-es-de');
+  state.mode = selectedMode;
+  if (state.mode === 'flash') startFlash();
+  else if (state.mode === 'verb') startVerb();
+  else if (state.mode === 'memory') startMemory();
+  else if (state.mode === 'asteroids') startAsteroidGame();
+  else if (state.mode === 'race') startRaceGame();
+  else if (state.mode === 'double') startDoubleQuiz();
+  else startQuiz();
+}
+
+// ── DOUBLE GAME ──
+const DBL_TIME = 9000;
+const DBL_POSITIONS = [
+  { top: '9%',    left: '50%',  transform: 'translateX(-50%)' },
+  { top: '50%',   right: '3%',  transform: 'translateY(-50%)' },
+  { bottom: '9%', left: '50%',  transform: 'translateX(-50%)' },
+  { top: '50%',   left: '3%',   transform: 'translateY(-50%)' },
+];
+
+let dbl = { items:[], index:0, pts:0, combo:1, t0:0, raf:null, running:false, locked:false };
+
+function startDoubleQuiz() {
+  dbl.items = shuffle([...state.currentSet]).map(item => ({
+    ...item, _dir: Math.random() < 0.5 ? 'es-de' : 'de-es'
+  }));
+  dbl.index = 0; dbl.pts = 0; dbl.combo = 1;
+  dbl.running = true; dbl.locked = false;
+  state.correct = 0; state.wrong = 0; state.xp = 0;
+  document.getElementById('double-level-label').textContent = LEVEL_NAMES[state.level];
+  goTo('double');
+  dblRender();
+}
+
+function stopDouble() {
+  dbl.running = false;
+  if (dbl.raf) { cancelAnimationFrame(dbl.raf); dbl.raf = null; }
+}
+
+function dblRender() {
+  if (!dbl.running) return;
+  const item = dbl.items[dbl.index];
+  const isEsDE = item._dir === 'es-de';
+  const src = isEsDE ? item.es : item.de;
+  const correct = isEsDE ? shortDE(item.de) : item.es;
+
+  document.getElementById('double-counter').textContent = (dbl.index + 1) + ' / ' + dbl.items.length;
+  document.getElementById('double-pts').textContent = dbl.pts;
+  dblUpdateCombo();
+
+  const lCard = document.getElementById('double-card-left');
+  document.getElementById('double-word-src').textContent = src;
+  document.getElementById('double-dir-badge').textContent = isEsDE ? 'ES → DE' : 'DE → ES';
+  lCard.className = 'double-card double-card-left dbl-in';
+
+  const distractors = shuffle(
+    dbl.items.filter(x => x !== item).map(x => isEsDE ? shortDE(x.de) : x.es)
+  ).slice(0, 3);
+  const options = shuffle([correct, ...distractors]);
+
+  const rCard = document.getElementById('double-card-right');
+  rCard.innerHTML = '';
+  rCard.className = 'double-card double-card-right dbl-in';
+  options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'double-option';
+    Object.assign(btn.style, DBL_POSITIONS[i]);
+    btn.textContent = opt;
+    btn.onclick = () => dblAnswer(btn, opt, correct);
+    rCard.appendChild(btn);
+  });
+
+  dblStartTimer();
+}
+
+function dblStartTimer() {
+  dbl.locked = false;
+  dbl.t0 = performance.now();
+  const arc = document.getElementById('double-timer-arc');
+  const C = 2 * Math.PI * 87;
+  arc.style.strokeDasharray = C;
+
+  function tick(now) {
+    if (!dbl.running) return;
+    const ratio = Math.max(0, 1 - (now - dbl.t0) / DBL_TIME);
+    arc.style.strokeDashoffset = C * (1 - ratio);
+    arc.style.stroke = ratio > 0.45 ? 'var(--accent)' : ratio > 0.2 ? 'var(--accent3)' : 'var(--danger)';
+    if (ratio <= 0 && !dbl.locked) { dbl.locked = true; dblTimeout(); return; }
+    if (ratio > 0) dbl.raf = requestAnimationFrame(tick);
+  }
+  dbl.raf = requestAnimationFrame(tick);
+}
+
+function dblAnswer(btn, chosen, correct) {
+  if (dbl.locked) return;
+  dbl.locked = true;
+  if (dbl.raf) { cancelAnimationFrame(dbl.raf); dbl.raf = null; }
+
+  document.querySelectorAll('.double-option').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    state.correct++;
+    const timeBonus = Math.round((1 - (performance.now() - dbl.t0) / DBL_TIME) * 100);
+    const pts = Math.max(10, 50 + timeBonus) * dbl.combo;
+    dbl.pts += pts;
+    dbl.combo = Math.min(8, dbl.combo + 1);
+    state.xp += pts;
+    dblUpdateCombo(true);
+    document.getElementById('double-pts').textContent = dbl.pts;
+    document.getElementById('stat-streak').textContent = state.correct;
+  } else {
+    btn.classList.add('wrong');
+    state.wrong++;
+    dbl.combo = 1;
+    document.getElementById('double-card-left').classList.add('dbl-shake');
+    dblUpdateCombo();
+  }
+  setTimeout(dblAdvance, 850);
+}
+
+function dblTimeout() {
+  state.wrong++;
+  dbl.combo = 1;
+  dblUpdateCombo();
+  const item = dbl.items[dbl.index];
+  const correct = item._dir === 'es-de' ? shortDE(item.de) : item.es;
+  document.querySelectorAll('.double-option').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+  setTimeout(dblAdvance, 850);
+}
+
+function dblAdvance() {
+  dbl.index++;
+  if (dbl.index >= dbl.items.length) {
+    stopDouble();
+    state.totalXP += state.xp;
+    document.getElementById('stat-xp').textContent = state.totalXP;
+    showResults();
+  } else {
+    dblRender();
+  }
+}
+
+function dblUpdateCombo(pop = false) {
+  const el = document.getElementById('double-combo');
+  el.textContent = '×' + dbl.combo;
+  if (pop) {
+    el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+    setTimeout(() => el.classList.remove('pop'), 200);
+  }
+}
+
+// ── FLASHCARD ──
+function startFlash() {
+  state.flashIndex = 0;
+  document.getElementById('flash-level-label').textContent = LEVEL_NAMES[state.level];
+  document.getElementById('flash-card').classList.remove('flipped');
+  renderFlash();
+  goTo('flash');
+}
+
+function renderFlash() {
+  const item = state.currentSet[state.flashIndex];
+  document.getElementById('flash-front-word').textContent = item.es;
+  document.getElementById('flash-front-ctx').textContent = item.ctx_es;
+  document.getElementById('flash-back-word').textContent = item.de;
+  document.getElementById('flash-back-ctx').textContent = item.ctx_de;
+  document.getElementById('flash-category').textContent = item.cat;
+  document.getElementById('flash-counter').textContent =
+    (state.flashIndex + 1) + ' / ' + state.currentSet.length;
+  document.getElementById('flash-card').classList.remove('flipped');
+}
+
+function flipCard() { document.getElementById('flash-card').classList.toggle('flipped'); }
+function flashNext() {
+  if (state.flashIndex < state.currentSet.length - 1) { state.flashIndex++; renderFlash(); }
+}
+function flashPrev() {
+  if (state.flashIndex > 0) { state.flashIndex--; renderFlash(); }
+}
+
+// ── QUIZ ──
+function startQuiz() {
+  state.quizItems = shuffle([...state.currentSet]);
+  state.qIndex = 0; state.correct = 0; state.wrong = 0;
+  state.lives = 3; state.streak = 0; state.xp = 0;
+  state.awaitingNext = false;
+  updateHeartsDisplay(); renderProgress(); goTo('quiz'); renderQuestion();
+}
+
+function renderQuestion() {
+  if (state.qIndex >= state.quizItems.length || state.lives <= 0) { showResults(); return; }
+  const item = state.quizItems[state.qIndex];
+  const isDouble = state.mode === 'double';
+  const isEsDE = isDouble ? item._dir === 'es-de' : state.mode === 'mc-es-de';
+  const isType = state.mode === 'type' || isDouble;
+  const srcIsEs = isEsDE || state.mode === 'type';
+
+  let dirLabel;
+  if (isDouble) dirLabel = isEsDE ? 'Español → Deutsch (eintippen)' : 'Deutsch → Español (eintippen)';
+  else if (isType) dirLabel = 'Español → Deutsch (eintippen)';
+  else dirLabel = isEsDE ? 'Español → Deutsch' : 'Deutsch → Español';
+
+  document.getElementById('quiz-exercise-label').textContent =
+    LEVEL_NAMES[state.level] + ' · ' + modeLabel(state.mode);
+  document.getElementById('quiz-direction').textContent = dirLabel;
+  document.getElementById('quiz-word').textContent = srcIsEs ? item.es : item.de;
+  document.getElementById('quiz-context').textContent = srcIsEs ? item.ctx_es : item.ctx_de;
+
+  if (!isType) {
+    renderMC(item, isEsDE);
+    document.getElementById('mc-options').style.display = 'grid';
+    document.getElementById('typing-section').style.display = 'none';
+  } else {
+    document.getElementById('mc-options').style.display = 'none';
+    document.getElementById('typing-section').style.display = 'block';
+    const inp = document.getElementById('typing-input');
+    inp.value = ''; inp.className = 'typing-input'; inp.disabled = false;
+    document.getElementById('check-btn').disabled = false;
+    document.getElementById('typing-hint').textContent = 'Kategorie: ' + item.cat;
+    inp.focus();
+  }
+  renderProgress();
+}
+
+function renderMC(item, isEsDE) {
+  const correct = isEsDE ? item.de : item.es;
+  const distractors = shuffle(
+    state.quizItems.filter(x => x !== item).map(x => isEsDE ? x.de : x.es)
+  ).slice(0, 3);
+  const options = shuffle([correct, ...distractors]);
+  const grid = document.getElementById('mc-options');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => handleMC(btn, opt, correct, item);
+    grid.appendChild(btn);
+  });
+}
+
+function handleMC(btn, chosen, correct, item) {
+  if (state.awaitingNext) return;
+  state.awaitingNext = true;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+  if (chosen === correct) { btn.classList.add('correct'); handleCorrect(item); }
+  else { btn.classList.add('wrong'); handleWrong(item); }
+}
+
+function checkTyping() {
+  if (state.awaitingNext) return;
+  const item = state.quizItems[state.qIndex];
+  const isDouble = state.mode === 'double';
+  const targetIsDE = !isDouble || item._dir === 'es-de';
+  const inp = document.getElementById('typing-input');
+  const answer = inp.value.trim().toLowerCase();
+  let ok;
+  if (targetIsDE) {
+    const target = item.de.toLowerCase();
+    const mainTarget = target.split('/')[0].trim().replace(/^(der|die|das)\s+/, '').trim();
+    const userClean = answer.replace(/^(der|die|das)\s+/, '').trim();
+    ok = answer === target || answer.includes(mainTarget) || (mainTarget.includes(userClean) && userClean.length > 3);
+  } else {
+    const target = item.es.toLowerCase();
+    const mainTarget = target.split('/')[0].trim().replace(/^(el|la|los|las)\s+/, '').trim();
+    const userClean = answer.replace(/^(el|la|los|las)\s+/, '').trim();
+    ok = answer === target || answer.includes(mainTarget) || (mainTarget.includes(userClean) && userClean.length > 3);
+  }
+  state.awaitingNext = true;
+  inp.disabled = true;
+  document.getElementById('check-btn').disabled = true;
+  if (ok) { inp.classList.add('correct'); handleCorrect(item); }
+  else { inp.classList.add('wrong'); handleWrong(item); }
+}
+
+function handleCorrect(item) {
+  state.correct++;
+  state.streak++;
+  const bonus = state.streak >= 3 ? 5 : 0;
+  state.xp += 10 + bonus;
+  document.getElementById('stat-streak').textContent = state.streak;
+  if (state.streak > 0 && state.streak % 3 === 0) showStreakPopup(state.streak);
+  showFeedback(true, item);
+}
+
+function handleWrong(item) {
+  state.wrong++;
+  state.streak = 0;
+  state.lives--;
+  document.getElementById('stat-streak').textContent = 0;
+  updateHeartsDisplay();
+  showFeedback(false, item);
+}
+
+function nextQuestion() {
+  state.qIndex++;
+  state.awaitingNext = false;
+  hideFeedback();
+  if (state.lives <= 0 || state.qIndex >= state.quizItems.length) showResults();
+  else renderQuestion();
+}
+
+function renderProgress() {
+  const total = state.quizItems.length;
+  const pct = Math.round((state.qIndex / total) * 100);
+  document.getElementById('prog-label').textContent = `Frage ${state.qIndex} von ${total}`;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+// ── FEEDBACK ──
+function showFeedback(ok, item) {
+  const bar = document.getElementById('feedback-bar');
+  bar.className = 'feedback-bar show ' + (ok ? 'correct-bar' : 'wrong-bar');
+  document.getElementById('fb-icon').textContent = ok ? '🎉' : '💡';
+  document.getElementById('fb-title').textContent = ok ? 'Richtig!' : 'Die Antwort war:';
+  document.getElementById('fb-detail').textContent = `${item.es} = ${item.de}  ·  ${item.cat}`;
+  const isLast = state.qIndex + 1 >= state.quizItems.length || state.lives <= 0;
+  document.getElementById('fb-next-btn').textContent = isLast ? 'Ergebnis ansehen' : 'Weiter';
+}
+
+function hideFeedback() {
+  document.getElementById('feedback-bar').className = 'feedback-bar';
+}
+
+// ── RESULTS ──
+function showResults() {
+  hideFeedback();
+  const total = state.correct + state.wrong;
+  const pct = total === 0 ? 0 : Math.round((state.correct / total) * 100);
+  const passed = pct >= 70;
+
+  state.totalXP += state.xp;
+  document.getElementById('stat-xp').textContent = state.totalXP;
+
+  document.getElementById('result-trophy').textContent =
+    pct === 100 ? '🏆' : pct >= 70 ? '🎉' : pct >= 40 ? '📚' : '💪';
+  document.getElementById('result-title').textContent =
+    pct === 100 ? '¡Perfecto! Makellos!' : pct >= 70 ? '¡Muy bien! Bestanden!' : 'Weiter üben!';
+  document.getElementById('result-subtitle').textContent =
+    LEVEL_NAMES[state.level] + ' · ' + modeLabel(state.mode);
+  document.getElementById('res-correct').textContent = state.correct;
+  document.getElementById('res-wrong').textContent = state.wrong;
+  document.getElementById('res-xp').textContent = '+' + state.xp;
+  document.getElementById('score-pct').textContent = pct + '%';
+
+  document.getElementById('result-msg').innerHTML = buildResultMsg(pct);
+
+  setTimeout(() => {
+    const ring = document.getElementById('score-ring');
+    ring.style.strokeDashoffset = 377 - (377 * pct / 100);
+    ring.style.stroke = pct >= 70 ? '#58cc02' : pct >= 40 ? '#ff9600' : '#ff4b4b';
+  }, 200);
+
+  const banner = document.getElementById('reward-banner');
+  if (passed) { banner.classList.add('show'); setTimeout(launchKonfetti, 400); }
+  else banner.classList.remove('show');
+
+  goTo('results');
+  document.getElementById('progress-wrap').style.display = 'none';
+}
+
+function buildResultMsg(pct) {
+  if (pct === 100) return '<strong>Makellos!</strong> Du hast alle Begriffe korrekt. Bereit für die Klausur.';
+  if (pct >= 85) return '<strong>Hervorragend!</strong> Du beherrschst das Vokabular sehr gut. Wiederhole die ' + state.wrong + ' falschen Begriffe noch einmal.';
+  if (pct >= 70) return '<strong>Gut gemacht!</strong> Du hast das Level bestanden. Konzentriere dich auf die Begriffe, die noch fehlen.';
+  if (pct >= 40) return '<strong>Solide Grundlage</strong> — aber noch nicht genug. Empfehlung: Starte mit den <em>Karteikarten</em>, dann probiere das Quiz erneut.';
+  return '<strong>Noch nicht bestanden.</strong> Starte mit den Karteikarten und übe dann einzelne Kategorien gezielt. Du schaffst das!';
+}
+
+function restartSameMode() {
+  document.getElementById('reward-banner').classList.remove('show');
+  if (state.mode === 'verb') startVerb();
+  else if (state.mode === 'asteroids') startAsteroidGame();
+  else if (state.mode === 'race') startRaceGame();
+  else if (state.mode === 'double') startDoubleQuiz();
+  else startQuiz();
+}
+
+// ── HEARTS ──
+function updateHeartsDisplay() {
+  const d = document.getElementById('hearts-display');
+  d.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const s = document.createElement('span');
+    s.className = 'heart';
+    s.textContent = i < state.lives ? '❤️' : '🖤';
+    d.appendChild(s);
+  }
+}
+
+function showStreakPopup(n) {
+  const el = document.getElementById('streak-popup');
+  document.getElementById('streak-popup-count').textContent = n;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ── KONFETTI ──
+function launchKonfetti() {
+  const canvas = document.getElementById('konfetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#58cc02','#ce82ff','#ff9600','#ff4b4b','#00d4ff','#ffeb3b','#ffffff'];
+  const particles = Array.from({ length: 180 }, () => ({
+    x: Math.random() * canvas.width,
+    y: -10 - Math.random() * 400,
+    vx: (Math.random() - 0.5) * 5,
+    vy: 2 + Math.random() * 4,
+    size: 7 + Math.random() * 8,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    rot: Math.random() * 360,
+    rotSpeed: (Math.random() - 0.5) * 9,
+    shape: Math.random() > 0.4 ? 'rect' : 'circle',
+    alpha: 1,
+  }));
+  let frame = 0;
+  (function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.07; p.rot += p.rotSpeed;
+      if (frame > 90) p.alpha -= 0.013;
+      if (p.alpha <= 0 || p.y > canvas.height + 20) return;
+      alive = true;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      if (p.shape === 'rect') ctx.fillRect(-p.size/2, -p.size/4, p.size, p.size/2);
+      else { ctx.beginPath(); ctx.arc(0,0,p.size/2,0,Math.PI*2); ctx.fill(); }
+      ctx.restore();
+    });
+    frame++;
+    if (alive && frame < 240) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  })();
+}
+
+// ── UTILS ──
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function modeLabel(m) {
+  return { flash:'Karteikarten', 'mc-es-de':'Spanisch→Deutsch', 'mc-de-es':'Deutsch→Spanisch', type:'Eintippen', verb:'Verbkonjugation', memory:'Memory', asteroids:'Asteroiden', race:'Autorennen', double:'Double' }[m] || m;
+}
+
+updateHeartsDisplay();
+
+// ── VERBS DATA ──
+const VERBS = [
+  { inf:"resistir",     subject:"El pueblo",          tense:"Pret. Indefinido", person:"3ª sing.",
+    sentence:"El pueblo ___ durante años de represión.",              answer:"resistió",       ctx:"resistir (reg. -IR): resistió" },
+  { inf:"tomar",        subject:"Los militares",       tense:"Pret. Indefinido", person:"3ª plur.",
+    sentence:"Los militares ___ el poder en 1973.",                   answer:"tomaron",        ctx:"tomar (reg. -AR): tomaron" },
+  { inf:"exiliarse",    subject:"Muchos artistas",     tense:"Pret. Indefinido", person:"3ª plur.",
+    sentence:"Muchos artistas se ___ tras el golpe.",                 answer:"exiliaron",      ctx:"exiliar(se) (reg. -AR): exiliaron" },
+  { inf:"prohibir",     subject:"La junta",            tense:"Pret. Indefinido", person:"3ª sing.",
+    sentence:"La junta ___ libros y canciones.",                      answer:"prohibió",       ctx:"prohibir (reg. -IR): prohibió" },
+  { inf:"desaparecer",  subject:"Miles de personas",   tense:"Pret. Indefinido", person:"3ª plur.",
+    sentence:"Miles de personas ___ durante la dictadura.",           answer:"desaparecieron", ctx:"desaparecer (reg. -ER): desaparecieron" },
+  { inf:"huir",         subject:"Skármeta",            tense:"Pret. Indefinido", person:"3ª sing.",
+    sentence:"Skármeta ___ al exilio en 1973.",                       answer:"huyó",           ctx:"huir (irr. y→y): huyó" },
+  { inf:"perseguir",    subject:"La DINA",             tense:"Pret. Indefinido", person:"3ª sing.",
+    sentence:"La DINA ___ a los opositores.",                         answer:"persiguió",      ctx:"perseguir (irr. e→i): persiguió" },
+  { inf:"silenciar",    subject:"La censura",          tense:"Pret. Indefinido", person:"3ª sing.",
+    sentence:"La censura ___ toda voz crítica.",                      answer:"silenció",       ctx:"silenciar (reg. -AR): silenció" },
+  { inf:"luchar",       subject:"El movimiento",       tense:"Imperfecto",       person:"3ª sing.",
+    sentence:"El movimiento ___ por la democracia.",                  answer:"luchaba",        ctx:"luchar (-AR imperfecto): -aba" },
+  { inf:"sufrir",       subject:"La población",        tense:"Imperfecto",       person:"3ª sing.",
+    sentence:"La población ___ bajo el régimen militar.",             answer:"sufría",         ctx:"sufrir (-IR imperfecto): -ía" },
+  { inf:"vivir",        subject:"Los exiliados",       tense:"Imperfecto",       person:"3ª plur.",
+    sentence:"Los exiliados ___ lejos de su patria.",                 answer:"vivían",         ctx:"vivir (-IR imperfecto plur.): -ían" },
+  { inf:"denunciar",    subject:"Los escritores",      tense:"Imperfecto",       person:"3ª plur.",
+    sentence:"Los escritores ___ las injusticias.",                   answer:"denunciaban",    ctx:"denunciar (-AR imperfecto plur.): -aban" },
+  { inf:"narrar",       subject:"Skármeta",            tense:"Presente",         person:"3ª sing.",
+    sentence:"Skármeta ___ la realidad chilena con compromiso.",      answer:"narra",          ctx:"narrar (-AR presente): -a" },
+  { inf:"preservar",    subject:"La literatura",       tense:"Presente",         person:"3ª sing.",
+    sentence:"La literatura ___ la memoria colectiva.",               answer:"preserva",       ctx:"preservar (-AR presente): -a" },
+  { inf:"recordar",     subject:"Las familias",        tense:"Presente",         person:"3ª plur.",
+    sentence:"Las familias ___ a los desaparecidos.",                 answer:"recuerdan",      ctx:"recordar (o→ue diptongación): recuerdan" },
+];
+
+// ── VERB CONJUGATION ──
+let verbState = { items: [], index: 0, correct: 0, wrong: 0, awaitingNext: false };
+
+function startVerb() {
+  verbState.items = shuffle([...VERBS]);
+  verbState.index = 0; verbState.correct = 0; verbState.wrong = 0; verbState.awaitingNext = false;
+  state.lives = 3; state.streak = 0; state.xp = 0;
+  updateHeartsDisplay();
+  document.getElementById('verb-level-label').textContent = LEVEL_NAMES[state.level];
+  goTo('verb');
+  renderVerb();
+}
+
+function renderVerb() {
+  const v = verbState.items[verbState.index];
+  document.getElementById('verb-tense').textContent = v.tense;
+  document.getElementById('verb-person').textContent = v.person;
+  document.getElementById('verb-inf').textContent = v.inf;
+  document.getElementById('verb-subject').textContent = v.subject;
+  document.getElementById('verb-sentence').innerHTML =
+    v.sentence.replace('___', '<span class="gap">___</span>');
+  document.getElementById('verb-hint').textContent = '';
+  document.getElementById('verb-counter').textContent =
+    (verbState.index + 1) + ' / ' + verbState.items.length;
+  const inp = document.getElementById('verb-input');
+  inp.value = ''; inp.className = 'typing-input'; inp.disabled = false;
+  const btn = document.getElementById('verb-check-btn');
+  btn.textContent = 'Überprüfen'; btn.disabled = false;
+  verbState.awaitingNext = false;
+  inp.focus();
+}
+
+function checkVerb() {
+  if (verbState.awaitingNext) { nextVerb(); return; }
+  const v = verbState.items[verbState.index];
+  const inp = document.getElementById('verb-input');
+  const normalize = s => s.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const ok = normalize(inp.value) === normalize(v.answer);
+  verbState.awaitingNext = true;
+  inp.disabled = true;
+  document.getElementById('verb-check-btn').textContent = 'Weiter →';
+  const hint = document.getElementById('verb-hint');
+  if (ok) {
+    inp.classList.add('correct');
+    verbState.correct++;
+    state.streak++;
+    state.xp += 10 + (state.streak >= 3 ? 5 : 0);
+    document.getElementById('stat-streak').textContent = state.streak;
+    if (state.streak % 3 === 0) showStreakPopup(state.streak);
+    hint.textContent = '✅ ' + v.ctx;
+    hint.style.color = 'var(--accent)';
+  } else {
+    inp.classList.add('wrong');
+    verbState.wrong++;
+    state.streak = 0;
+    state.lives = Math.max(0, state.lives - 1);
+    document.getElementById('stat-streak').textContent = 0;
+    updateHeartsDisplay();
+    hint.textContent = '❌ Richtig: ' + v.answer + ' — ' + v.ctx;
+    hint.style.color = 'var(--danger)';
+  }
+}
+
+function nextVerb() {
+  verbState.index++;
+  if (verbState.index >= verbState.items.length) {
+    state.correct = verbState.correct;
+    state.wrong = verbState.wrong;
+    showResults();
+  } else {
+    renderVerb();
+  }
+}
+
+// ── MEMORY ──
+let memState = { cards: [], flipped: [], matched: 0, moves: 0, lock: false };
+
+function startMemory() {
+  state.lives = 3; state.streak = 0; state.xp = 0;
+  updateHeartsDisplay();
+  const vocab = shuffle([...state.currentSet]).slice(0, 8);
+  const raw = [];
+  vocab.forEach((item, i) => {
+    raw.push({ id: i * 2,     pairId: i, type: 'es', text: item.es, matched: false });
+    raw.push({ id: i * 2 + 1, pairId: i, type: 'de', text: shortDE(item.de), matched: false });
+  });
+  memState.cards = shuffle(raw);
+  memState.flipped = [];
+  memState.matched = 0;
+  memState.moves = 0;
+  memState.lock = false;
+  document.getElementById('mem-level-label').textContent = LEVEL_NAMES[state.level];
+  document.getElementById('mem-pairs').textContent = '0 / 8 Paare';
+  document.getElementById('mem-moves').textContent = '0 Züge';
+  document.getElementById('mem-win').classList.remove('show');
+  renderMemoryGrid();
+  goTo('memory');
+}
+
+function shortDE(str) { return str.split('/')[0].trim(); }
+
+function renderMemoryGrid() {
+  const grid = document.getElementById('memory-grid');
+  grid.innerHTML = '';
+  memState.cards.forEach(card => {
+    const el = document.createElement('div');
+    el.className = 'mem-card';
+    el.dataset.id = card.id;
+    el.innerHTML = `<div class="mem-inner">
+      <div class="mem-front">🎴</div>
+      <div class="mem-back ${card.type}">${card.text}</div>
+    </div>`;
+    el.addEventListener('click', () => flipMemCard(card.id));
+    grid.appendChild(el);
+  });
+}
+
+function flipMemCard(id) {
+  if (memState.lock) return;
+  const card = memState.cards.find(c => c.id === id);
+  if (!card || card.matched) return;
+  const el = document.querySelector(`.mem-card[data-id="${id}"]`);
+  if (el.classList.contains('flipped')) return;
+  el.classList.add('flipped');
+  memState.flipped.push(id);
+  if (memState.flipped.length === 2) {
+    memState.moves++;
+    document.getElementById('mem-moves').textContent = memState.moves + ' Züge';
+    memState.lock = true;
+    checkMemMatch();
+  }
+}
+
+function checkMemMatch() {
+  const [id1, id2] = memState.flipped;
+  const c1 = memState.cards.find(c => c.id === id1);
+  const c2 = memState.cards.find(c => c.id === id2);
+  const el1 = document.querySelector(`.mem-card[data-id="${id1}"]`);
+  const el2 = document.querySelector(`.mem-card[data-id="${id2}"]`);
+  if (c1.pairId === c2.pairId) {
+    c1.matched = c2.matched = true;
+    el1.classList.add('matched'); el2.classList.add('matched');
+    memState.matched++;
+    memState.flipped = [];
+    memState.lock = false;
+    document.getElementById('mem-pairs').textContent = memState.matched + ' / 8 Paare';
+    state.xp += 15;
+    if (memState.matched === 8) memoryWin();
+  } else {
+    el1.classList.add('wrong-flash'); el2.classList.add('wrong-flash');
+    setTimeout(() => {
+      el1.classList.remove('flipped', 'wrong-flash');
+      el2.classList.remove('flipped', 'wrong-flash');
+      memState.flipped = [];
+      memState.lock = false;
+    }, 1100);
+  }
+}
+
+function memoryWin() {
+  state.totalXP += state.xp;
+  document.getElementById('stat-xp').textContent = state.totalXP;
+  const win = document.getElementById('mem-win');
+  document.getElementById('mem-win-msg').textContent =
+    memState.moves + ' Züge · +' + state.xp + ' XP verdient!';
+  win.classList.add('show');
+  setTimeout(launchKonfetti, 300);
+}
+
+// ── RACE GAME ──
+const RACE_PAIRS = 4;
+const RACE_ROUNDS = 6;
+
+let raceState = {
+  running: false, raf: null, canvas: null, ctx: null,
+  carX: 0, carTargetX: 0,
+  rounds: [], currentRound: 0,
+  leftItems: [], rightItems: [], matched: null,
+  selectedLeft: null, awaitingFeedback: false,
+  roadOffset: 0, boosting: false, trees: [],
+};
+
+function startRaceGame() {
+  if (raceState.raf) cancelAnimationFrame(raceState.raf);
+  const vocab = shuffle([...state.currentSet]);
+  raceState.rounds = Array.from({length: RACE_ROUNDS}, (_, i) =>
+    Array.from({length: RACE_PAIRS}, (__, j) => vocab[(i * RACE_PAIRS + j) % vocab.length])
+  );
+  Object.assign(raceState, {
+    running: true, carX: 0, carTargetX: 0,
+    currentRound: 0, selectedLeft: null, awaitingFeedback: false,
+    roadOffset: 0, boosting: false,
+  });
+  state.lives = 3; state.streak = 0; state.xp = 0;
+  updateHeartsDisplay();
+  const canvas = document.getElementById('race-canvas');
+  raceState.canvas = canvas;
+  raceState.ctx = canvas.getContext('2d');
+  canvas.width = Math.min(window.innerWidth - 48, 632);
+  canvas.height = 180;
+  // Init tree positions across track width
+  raceState.trees = [0.07, 0.23, 0.40, 0.57, 0.74, 0.91].map(f => f * canvas.width);
+  document.getElementById('race-level-label').textContent = LEVEL_NAMES[state.level];
+  goTo('race');
+  raceRenderPairs();
+  raceLoop();
+}
+
+function stopRaceGame() {
+  raceState.running = false;
+  if (raceState.raf) { cancelAnimationFrame(raceState.raf); raceState.raf = null; }
+}
+
+function raceRenderPairs() {
+  const pairs = raceState.rounds[raceState.currentRound];
+  raceState.leftItems = pairs.map((p, i) => ({ text: p.es, idx: i }));
+  raceState.rightItems = shuffle(pairs.map((p, i) => ({ text: shortDE(p.de), idx: i })));
+  raceState.matched = new Set();
+  raceState.selectedLeft = null;
+
+  const lCol = document.getElementById('race-col-left');
+  const rCol = document.getElementById('race-col-right');
+  lCol.innerHTML = ''; rCol.innerHTML = '';
+  raceState.leftItems.forEach((item, i) => {
+    const b = document.createElement('button');
+    b.className = 'race-word-btn'; b.textContent = item.text; b.dataset.idx = i;
+    b.onclick = () => raceClickLeft(i);
+    lCol.appendChild(b);
+  });
+  raceState.rightItems.forEach((item, i) => {
+    const b = document.createElement('button');
+    b.className = 'race-word-btn'; b.textContent = item.text; b.dataset.ridx = i;
+    b.onclick = () => raceClickRight(i);
+    rCol.appendChild(b);
+  });
+  document.getElementById('race-round-info').textContent =
+    'Runde ' + (raceState.currentRound + 1) + ' / ' + RACE_ROUNDS;
+  document.getElementById('race-feedback').innerHTML = '&nbsp;';
+}
+
+function raceClickLeft(i) {
+  if (raceState.matched.has('L' + i)) return;
+  raceState.selectedLeft = i;
+  document.querySelectorAll('#race-col-left .race-word-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i && !raceState.matched.has('L' + idx));
+  });
+}
+
+function raceClickRight(i) {
+  if (raceState.awaitingFeedback || raceState.selectedLeft === null) return;
+  if (raceState.matched.has('R' + i)) return;
+  const li = raceState.selectedLeft;
+  const ok = raceState.leftItems[li].idx === raceState.rightItems[i].idx;
+  const lBtns = document.querySelectorAll('#race-col-left .race-word-btn');
+  const rBtns = document.querySelectorAll('#race-col-right .race-word-btn');
+  const fb = document.getElementById('race-feedback');
+
+  if (ok) {
+    raceState.matched.add('L' + li); raceState.matched.add('R' + i);
+    lBtns[li].className = 'race-word-btn correct'; lBtns[li].disabled = true;
+    rBtns[i].className = 'race-word-btn correct';  rBtns[i].disabled = true;
+    raceState.selectedLeft = null;
+    state.xp += 10; state.streak++;
+    document.getElementById('stat-streak').textContent = state.streak;
+    if (state.streak % 3 === 0 && state.streak > 0) showStreakPopup(state.streak);
+    fb.innerHTML = '✅ <strong>' + raceState.leftItems[li].text + '</strong> = ' + raceState.rightItems[i].text;
+    fb.style.color = 'var(--accent)';
+    if (raceState.matched.size === RACE_PAIRS * 2) setTimeout(raceRoundDone, 600);
+  } else {
+    raceState.awaitingFeedback = true;
+    lBtns[li].classList.add('wrong'); rBtns[i].classList.add('wrong');
+    lBtns[li].classList.remove('selected');
+    fb.textContent = '❌ Falsch! Versuche es nochmal.';
+    fb.style.color = 'var(--danger)';
+    state.streak = 0; document.getElementById('stat-streak').textContent = 0;
+    setTimeout(() => {
+      lBtns[li].classList.remove('wrong');
+      rBtns[i].classList.remove('wrong');
+      raceState.selectedLeft = null;
+      raceState.awaitingFeedback = false;
+    }, 550);
+  }
+}
+
+function raceRoundDone() {
+  raceState.currentRound++;
+  raceState.carTargetX = raceState.currentRound / RACE_ROUNDS;
+  raceState.boosting = true;
+  setTimeout(() => { raceState.boosting = false; }, 1600);
+  if (raceState.currentRound >= RACE_ROUNDS) {
+    raceState.carTargetX = 1.06;
+    setTimeout(() => { stopRaceGame(); raceShowWin(); }, 2200);
+  } else {
+    setTimeout(raceRenderPairs, 900);
+  }
+}
+
+function raceLoop() {
+  if (!raceState.running) return;
+  const { canvas, ctx } = raceState;
+  raceState.carX += (raceState.carTargetX - raceState.carX) * 0.05;
+  const spd = raceState.boosting ? 4.5 : 0;
+  if (spd > 0) {
+    raceState.roadOffset += spd;
+    raceState.trees = raceState.trees.map(x => {
+      x -= spd * 0.35;
+      if (x < -50) x += canvas.width + 100;
+      return x;
+    });
+  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  raceDrawScene(ctx, canvas);
+  raceState.raf = requestAnimationFrame(raceLoop);
+}
+
+function raceDrawScene(ctx, canvas) {
+  const W = canvas.width, H = canvas.height;
+  const hY = H * 0.46;
+
+  // Sky
+  const sky = ctx.createLinearGradient(0, 0, 0, hY);
+  sky.addColorStop(0, '#0d47a1'); sky.addColorStop(1, '#42a5f5');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, hY);
+
+  // Clouds
+  [[W * 0.15, hY * 0.25], [W * 0.5, hY * 0.15], [W * 0.78, hY * 0.3]].forEach(([cx, cy]) => {
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    [0, 1, -1].forEach(dx => {
+      ctx.beginPath(); ctx.arc(cx + dx * 14, cy, 13 - Math.abs(dx) * 3, 0, Math.PI * 2); ctx.fill();
+    });
+  });
+
+  // Grass
+  ctx.fillStyle = '#388e3c'; ctx.fillRect(0, hY, W, H - hY);
+
+  // Road surface
+  ctx.fillStyle = '#546e7a'; ctx.fillRect(0, hY + 10, W, H - hY - 10);
+
+  // Curb stripes top
+  const cw = 28;
+  for (let i = 0; i <= Math.ceil(W / cw) + 1; i++) {
+    const rx = i * cw - (raceState.roadOffset % cw);
+    ctx.fillStyle = i % 2 === 0 ? '#e53935' : '#fff';
+    ctx.fillRect(rx, hY + 10, cw, 8);
+    ctx.fillStyle = i % 2 === 0 ? '#e53935' : '#fff';
+    ctx.fillRect(rx, H - 8, cw, 8);
+  }
+
+  // Center dashes
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 3;
+  ctx.setLineDash([20, 16]); ctx.lineDashOffset = -(raceState.roadOffset % 36);
+  const midY = hY + (H - hY) / 2;
+  ctx.beginPath(); ctx.moveTo(0, midY); ctx.lineTo(W, midY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Trees
+  raceState.trees.forEach(tx => raceDrawTree(ctx, tx, hY + 4));
+
+  // Finish line
+  raceDrawFinish(ctx, W * 0.90, hY, H);
+
+  // Car
+  const carXpx = W * 0.04 + raceState.carX * W * 0.82;
+  raceDrawCar(ctx, Math.min(carXpx, W * 0.95), hY + (H - hY) * 0.32, raceState.boosting);
+}
+
+function raceDrawTree(ctx, x, y) {
+  ctx.save(); ctx.translate(x, y);
+  ctx.fillStyle = '#5d4037'; ctx.fillRect(-4, -12, 8, 16);
+  ctx.fillStyle = '#1b5e20';
+  ctx.beginPath(); ctx.moveTo(0, -42); ctx.lineTo(-17, -10); ctx.lineTo(17, -10); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#2e7d32';
+  ctx.beginPath(); ctx.moveTo(0, -30); ctx.lineTo(-13, -6); ctx.lineTo(13, -6); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+function raceDrawFinish(ctx, x, hY, H) {
+  ctx.fillStyle = '#fff'; ctx.fillRect(x - 2, hY - 42, 4, 46);
+  const fw = 36, fh = 24, rows = 3, cols = 4;
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    ctx.fillStyle = (r + c) % 2 === 0 ? '#fff' : '#111';
+    ctx.fillRect(x + c * (fw / cols), hY - 42 + r * (fh / rows), fw / cols, fh / rows);
+  }
+  ctx.save();
+  ctx.font = 'bold 10px sans-serif'; ctx.fillStyle = '#ffeb3b';
+  ctx.textAlign = 'center'; ctx.shadowBlur = 3; ctx.shadowColor = '#000';
+  ctx.fillText('FINISH', x + fw / 2, hY + 14);
+  ctx.restore();
+}
+
+function raceDrawCar(ctx, x, y, boosting) {
+  ctx.save(); ctx.translate(x, y);
+  // Exhaust
+  if (boosting) {
+    [0, 1, 2].forEach(i => {
+      ctx.save(); ctx.globalAlpha = 0.75 - i * 0.22;
+      ctx.fillStyle = i % 2 === 0 ? '#ff9600' : '#ff5722';
+      ctx.beginPath(); ctx.ellipse(-29 - i * 10, 3, 11 + i * 4, 5, 0, 0, Math.PI * 2);
+      ctx.fill(); ctx.restore();
+    });
+    ctx.strokeStyle = 'rgba(255,255,255,0.45)'; ctx.lineWidth = 1.5;
+    [-5, 1, 7].forEach(dy => {
+      ctx.beginPath(); ctx.moveTo(-38, dy); ctx.lineTo(-26, dy); ctx.stroke();
+    });
+  }
+  // Body
+  ctx.fillStyle = '#e53935'; ctx.fillRect(-28, -12, 56, 20);
+  // Roof
+  ctx.fillStyle = '#b71c1c'; ctx.fillRect(-15, -24, 30, 14);
+  // Windows
+  ctx.fillStyle = '#90caf9';
+  ctx.fillRect(-12, -22, 11, 9);
+  ctx.fillRect(3, -22, 10, 9);
+  // Headlight
+  ctx.fillStyle = '#fff59d'; ctx.fillRect(26, -4, 4, 6);
+  // Wheels
+  [-15, 14].forEach(wx => {
+    ctx.fillStyle = '#212121';
+    ctx.beginPath(); ctx.arc(wx, 10, 9, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#9e9e9e';
+    ctx.beginPath(); ctx.arc(wx, 10, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#616161'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(wx - 4, 10); ctx.lineTo(wx + 4, 10); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(wx, 6); ctx.lineTo(wx, 14); ctx.stroke();
+  });
+  ctx.restore();
+}
+
+function raceShowWin() {
+  state.totalXP += state.xp;
+  document.getElementById('stat-xp').textContent = state.totalXP;
+  document.getElementById('result-trophy').textContent = '🏆';
+  document.getElementById('result-title').textContent = '¡Ziel erreicht! Rennen gewonnen!';
+  document.getElementById('result-subtitle').textContent = LEVEL_NAMES[state.level] + ' · Autorennen';
+  document.getElementById('res-correct').textContent = RACE_ROUNDS * RACE_PAIRS;
+  document.getElementById('res-wrong').textContent = 0;
+  document.getElementById('res-xp').textContent = '+' + state.xp;
+  document.getElementById('score-pct').textContent = '100%';
+  document.getElementById('result-msg').innerHTML =
+    '<strong>¡Excelente!</strong> Du hast alle ' + (RACE_ROUNDS * RACE_PAIRS) +
+    ' Wortpaare korrekt verknüpft und die Ziellinie überquert. Dein Auto hat das Rennen gewonnen!';
+  setTimeout(() => {
+    const ring = document.getElementById('score-ring');
+    ring.style.strokeDashoffset = 0; ring.style.stroke = '#58cc02';
+  }, 200);
+  document.getElementById('reward-banner').classList.add('show');
+  setTimeout(launchKonfetti, 400);
+  goTo('results');
+  document.getElementById('progress-wrap').style.display = 'none';
+}
+
+// ── ASTEROID GAME ──
+const AST_COLORS = ['#ce82ff','#ff9600','#58cc02','#00d4ff','#ff4b4b','#ffeb3b'];
+let starsCanvas = null;
+// px/sec — distance ~430px: Langsam=15s, Normal=10s, Schnell=6s
+const AST_SPEED_MAP = { 1: 29, 2: 43, 3: 72 };
+const AST_SPEED_MAX = { 1: 58, 2: 86, 3: 144 };
+let astSpeedLevel = 1;
+
+function astGetBaseSpeed() { return AST_SPEED_MAP[astSpeedLevel]; }
+
+function astSetSpeed(level) {
+  astSpeedLevel = level;
+  [1, 2, 3].forEach(n => {
+    const el = document.getElementById('ast-star-' + n);
+    if (el) el.classList.toggle('on', n <= level);
+  });
+  astState.speed = AST_SPEED_MAP[level];
+  if (astState.asteroid) astState.asteroid.speed = astState.speed;
+}
+
+let astState = {
+  running: false, score: 0, correctCount: 0, speed: 0.5,
+  asteroid: null, particles: [], raf: null, canvas: null, ctx: null,
+};
+
+function startAsteroidGame() {
+  astState.running = true;
+  astState.score = 0; astState.correctCount = 0; astLastTs = 0;
+  astSetSpeed(astSpeedLevel);
+  astState.particles = []; astState.asteroid = null;
+  if (astState.raf) cancelAnimationFrame(astState.raf);
+  state.lives = 3; state.streak = 0; state.xp = 0;
+  updateHeartsDisplay();
+  document.getElementById('ast-level-label').textContent = LEVEL_NAMES[state.level];
+  const canvas = document.getElementById('ast-canvas');
+  astState.canvas = canvas;
+  astState.ctx = canvas.getContext('2d');
+  const maxW = Math.min(window.innerWidth - 48, 632);
+  canvas.width = maxW; canvas.height = 340;
+  starsCanvas = null;
+  updateAstScore();
+  goTo('asteroids');
+  setTimeout(astSpawn, 400);
+  astLoop();
+}
+
+function stopAsteroidGame() {
+  astState.running = false;
+  if (astState.raf) { cancelAnimationFrame(astState.raf); astState.raf = null; }
+}
+
+function astSpawn() {
+  if (!astState.running) return;
+  const vocab = state.currentSet;
+  const item = vocab[Math.floor(Math.random() * vocab.length)];
+  const dir = Math.random() > 0.5 ? 'es-de' : 'de-es';
+  const display = dir === 'es-de' ? item.es : shortDE(item.de);
+  const answer = dir === 'es-de' ? item.de : item.es;
+  const canvas = astState.canvas;
+  const radius = Math.max(48, Math.min(display.length * 5, 88));
+  const x = radius + 10 + Math.random() * (canvas.width - radius * 2 - 20);
+  const numSides = 8;
+  const jagged = Array.from({length: numSides}, () => 0.72 + Math.random() * 0.56);
+  astState.asteroid = {
+    x, y: -radius - 10, radius, speed: astState.speed,
+    display, answer, item, dir,
+    rotation: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.012,
+    color: AST_COLORS[Math.floor(Math.random() * AST_COLORS.length)],
+    jagged, exploding: false, explodeFrame: 0,
+  };
+  const flag = dir === 'es-de' ? '🇪🇸→🇩🇪' : '🇩🇪→🇪🇸';
+  document.getElementById('ast-target-word').innerHTML =
+    flag + ' Übersetze: <strong>' + display + '</strong>';
+  const inp = document.getElementById('ast-input');
+  inp.value = ''; inp.className = ''; inp.disabled = false; inp.focus();
+}
+
+let astLastTs = 0;
+function astLoop(ts = 0) {
+  if (!astState.running) return;
+  const dt = Math.min((ts - astLastTs) / 1000, 0.1);
+  astLastTs = ts;
+
+  const {canvas, ctx, asteroid, particles} = astState;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  astDrawBg(ctx, canvas);
+
+  // Particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.alpha -= 0.038;
+    if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+    ctx.save(); ctx.globalAlpha = Math.max(0, p.alpha);
+    ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  // Player ship
+  astDrawShip(ctx, canvas);
+
+  // Asteroid
+  if (asteroid) {
+    if (!asteroid.exploding) {
+      asteroid.y += asteroid.speed * dt;
+      asteroid.rotation += asteroid.rotSpeed;
+      const danger = asteroid.y / canvas.height > 0.58;
+      astDrawAsteroid(ctx, asteroid, danger);
+      if (asteroid.y - asteroid.radius > canvas.height - 30) astMissed();
+    } else {
+      asteroid.explodeFrame++;
+      if (asteroid.explodeFrame > 18) { astState.asteroid = null; setTimeout(astSpawn, 350); }
+    }
+  }
+
+  astState.raf = requestAnimationFrame(astLoop);
+}
+
+function astDrawBg(ctx, canvas) {
+  if (!starsCanvas || starsCanvas.width !== canvas.width) {
+    starsCanvas = document.createElement('canvas');
+    starsCanvas.width = canvas.width; starsCanvas.height = canvas.height;
+    const s = starsCanvas.getContext('2d');
+    const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+    s.fillStyle = dark ? '#080a12' : '#dde4f5';
+    s.fillRect(0, 0, canvas.width, canvas.height);
+    s.fillStyle = dark ? 'rgba(255,255,255,0.55)' : 'rgba(80,100,180,0.45)';
+    for (let i = 0; i < 70; i++) {
+      const r = Math.random() * 1.4;
+      s.beginPath();
+      s.arc(Math.random() * canvas.width, Math.random() * canvas.height, r, 0, Math.PI * 2);
+      s.fill();
+    }
+  }
+  ctx.drawImage(starsCanvas, 0, 0);
+}
+
+function astDrawShip(ctx, canvas) {
+  const x = canvas.width / 2, y = canvas.height - 18;
+  ctx.save(); ctx.translate(x, y);
+  ctx.fillStyle = '#58cc02'; ctx.strokeStyle = '#85e620'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, -16); ctx.lineTo(-11, 9); ctx.lineTo(11, 9); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#ff9600'; ctx.shadowBlur = 8; ctx.shadowColor = '#ff9600';
+  ctx.beginPath(); ctx.arc(0, 12, 4, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+function astDrawAsteroid(ctx, ast, danger) {
+  const {x, y, radius, rotation, color, jagged, display} = ast;
+  const sides = jagged.length;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rotation);
+  ctx.beginPath();
+  for (let i = 0; i < sides; i++) {
+    const angle = (i / sides) * Math.PI * 2;
+    const r = radius * jagged[i];
+    const px = Math.cos(angle) * r, py = Math.sin(angle) * r;
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  const baseColor = danger ? '#ff4b4b' : color;
+  const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+  grad.addColorStop(0, baseColor + 'dd'); grad.addColorStop(1, baseColor + '44');
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.strokeStyle = baseColor; ctx.lineWidth = 2.5;
+  if (danger) { ctx.shadowBlur = 18; ctx.shadowColor = '#ff4b4b'; }
+  ctx.stroke(); ctx.shadowBlur = 0;
+  ctx.restore();
+
+  // Word text (no rotation, so it's readable)
+  ctx.save(); ctx.translate(x, y);
+  const fontSize = Math.max(11, Math.min(15, radius * 0.27));
+  ctx.font = `bold ${fontSize}px 'Segoe UI', system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#fff'; ctx.shadowBlur = 5; ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  const lines = astWrap(ctx, display, radius * 1.55);
+  const lh = fontSize + 3;
+  lines.forEach((ln, i) => ctx.fillText(ln, 0, (i - (lines.length - 1) / 2) * lh));
+  ctx.restore();
+}
+
+function astWrap(ctx, text, maxW) {
+  const words = text.split(' '), lines = [];
+  let cur = '';
+  for (const w of words) {
+    const test = cur ? cur + ' ' + w : w;
+    if (ctx.measureText(test).width <= maxW || !cur) cur = test;
+    else { lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+function astSpawnBurst(x, y, color) {
+  for (let i = 0; i < 22; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const spd = 2.5 + Math.random() * 4.5;
+    astState.particles.push({
+      x, y, vx: Math.cos(a) * spd, vy: Math.sin(a) * spd,
+      r: 3 + Math.random() * 4, color, alpha: 1,
+    });
+  }
+}
+
+function submitAsteroid() {
+  if (!astState.running || !astState.asteroid || astState.asteroid.exploding) return;
+  const inp = document.getElementById('ast-input');
+  const answer = inp.value.trim();
+  if (!answer) return;
+  const ast = astState.asteroid;
+  if (astAnswerOk(answer, ast.answer, ast.dir)) {
+    astSpawnBurst(ast.x, ast.y, ast.color);
+    ast.exploding = true;
+    astState.score = Math.min(10, astState.score + 1);
+    astState.correctCount++;
+    state.xp += 12 + (state.streak >= 3 ? 5 : 0);
+    state.streak++;
+    document.getElementById('stat-streak').textContent = state.streak;
+    if (state.streak % 3 === 0) showStreakPopup(state.streak);
+    if (astState.correctCount % 2 === 0) astState.speed = Math.min(AST_SPEED_MAX[astSpeedLevel], astState.speed + 9);
+    updateAstScore();
+    if (astState.score >= 10) setTimeout(() => { stopAsteroidGame(); astShowWin(); }, 700);
+  } else {
+    inp.classList.add('ast-wrong');
+    inp.value = '';
+    setTimeout(() => { inp.classList.remove('ast-wrong'); inp.focus(); }, 500);
+  }
+}
+
+function astMissed() {
+  astState.score = Math.max(0, astState.score - 1);
+  state.streak = 0; state.lives = Math.max(0, state.lives - 1);
+  document.getElementById('stat-streak').textContent = 0;
+  updateHeartsDisplay(); updateAstScore();
+  const c = astState.canvas;
+  c.style.transform = 'translateX(-7px)';
+  setTimeout(() => c.style.transform = 'translateX(7px)', 80);
+  setTimeout(() => c.style.transform = '', 160);
+  astState.asteroid = null;
+  setTimeout(astSpawn, 300);
+}
+
+function astAnswerOk(input, correct, dir) {
+  const norm = s => s.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+                      .replace(/^(der|die|das|el|la|los|las)\s+/, '').trim();
+  const u = norm(input);
+  const c = norm(correct);
+  const first = norm(correct.split('/')[0]);
+  return u === c || u === first || (first.length > 4 && first.includes(u) && u.length > 3);
+}
+
+function updateAstScore() {
+  const pct = (astState.score / 10) * 100;
+  document.getElementById('ast-score-fill').style.width = pct + '%';
+  document.getElementById('ast-score-num').textContent = astState.score + ' / 10';
+  const stars = astState.speed < 1.5 ? '⭐' : astState.speed < 2.5 ? '⭐⭐' : astState.speed < 3.8 ? '⭐⭐⭐' : '⭐⭐⭐⭐';
+  document.getElementById('ast-speed-label').textContent = 'Geschwindigkeit: ' + stars;
+}
+
+function astShowWin() {
+  state.totalXP += state.xp;
+  document.getElementById('stat-xp').textContent = state.totalXP;
+  document.getElementById('result-trophy').textContent = '🏆';
+  document.getElementById('result-title').textContent = 'Asteroiden besiegt!';
+  document.getElementById('result-subtitle').textContent = LEVEL_NAMES[state.level] + ' · Asteroiden';
+  document.getElementById('res-correct').textContent = astState.correctCount;
+  document.getElementById('res-wrong').textContent = Math.max(0, astState.correctCount - astState.score);
+  document.getElementById('res-xp').textContent = '+' + state.xp;
+  document.getElementById('score-pct').textContent = '100%';
+  document.getElementById('result-msg').innerHTML =
+    '<strong>¡Excelente!</strong> Du hast alle 10 Punkte erreicht und ' +
+    astState.correctCount + ' Wörter korrekt übersetzt!';
+  setTimeout(() => {
+    const ring = document.getElementById('score-ring');
+    ring.style.strokeDashoffset = 0; ring.style.stroke = '#58cc02';
+  }, 200);
+  document.getElementById('reward-banner').classList.add('show');
+  setTimeout(launchKonfetti, 400);
+  goTo('results');
+  document.getElementById('progress-wrap').style.display = 'none';
+}
+
+// ── THEME ──
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') !== 'light';
+  const next = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('theme-btn').textContent = next === 'light' ? '☀️' : '🌙';
+  localStorage.setItem('skarmeta-theme', next);
+  starsCanvas = null;
+}
+
+(function initTheme() {
+  const saved = localStorage.getItem('skarmeta-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('theme-btn').textContent = saved === 'light' ? '☀️' : '🌙';
+})();
+</script>
+</body>
+</html>
