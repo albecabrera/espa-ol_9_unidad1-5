@@ -139,9 +139,7 @@
     }
     .level-card.lv1::before { background: var(--accent); }
     .level-card.lv2::before { background: var(--accent3); }
-    .level-card.lv3::before { background: var(--danger); }
-    .level-card.lv4::before { background: var(--accent2); }
-    .level-card.lv5::before { background: #00d4ff; }
+    .level-card.lv3::before { background: var(--accent2); }
     .level-card:hover {
       border-color: var(--accent); transform: translateY(-3px);
       box-shadow: 0 8px 32px rgba(88,204,2,0.12);
@@ -178,75 +176,39 @@
     .mode-card-featured:hover { border-color: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(206,130,255,0.12); }
     .mode-card-featured.selected { border-color: var(--accent2); background: rgba(206,130,255,0.1); }
 
-    /* ── DOUBLE GAME ── */
-    .double-topbar {
-      width: 100%; display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 20px;
+    /* ── DOBBLE GAME ── */
+    .dobble-topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .dobble-pts { font-size:2rem; font-weight:900; color:var(--accent); }
+    .dobble-combo { background:var(--accent2); color:#fff; border-radius:24px; padding:4px 16px; font-size:1rem; font-weight:800; }
+    .dobble-counter { color:var(--text-muted); font-size:0.95rem; font-weight:600; }
+    .dobble-arena { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:12px; }
+    .dobble-card { border-radius:50%; overflow:hidden; cursor:default; }
+    .dobble-card-left  { box-shadow: 0 0 0 4px var(--accent),  0 16px 48px rgba(88,204,2,0.25); }
+    .dobble-card-right { box-shadow: 0 0 0 4px var(--accent2), 0 16px 48px rgba(206,130,255,0.25); }
+    .dobble-canvas { display:block; border-radius:50%; }
+    .dobble-hint { min-height:24px; font-size:0.95rem; color:var(--text-muted); text-align:center; margin-bottom:10px; }
+    .dobble-timer-bar { height:8px; background:var(--surface2); border-radius:999px; overflow:hidden; max-width:540px; margin:0 auto; }
+    .dobble-timer-fill { height:100%; background:linear-gradient(90deg,var(--accent),#85e620); border-radius:999px; width:100%; transition:width 0.1s linear; }
+    .dobble-vs { font-size:1.5rem; color:var(--text-muted); flex-shrink:0; }
+    .xp-float {
+      position: fixed; pointer-events: none; z-index: 9000;
+      font-size: 1.2rem; font-weight: 800; color: var(--accent);
+      animation: xpFloat 1.2s ease-out forwards;
     }
-    .double-pts { font-size: 2rem; font-weight: 900; color: var(--accent); letter-spacing: -0.02em; }
-    .double-combo {
-      background: var(--accent2); color: #fff; border-radius: 24px;
-      padding: 5px 16px; font-size: 1.05rem; font-weight: 800;
-      transition: transform 0.12s;
+    @keyframes xpFloat {
+      0%   { opacity:1; transform: translateY(0) scale(1); }
+      100% { opacity:0; transform: translateY(-60px) scale(1.3); }
     }
-    .double-combo.pop { transform: scale(1.4); }
-    .double-counter-txt { color: var(--text-muted); font-size: 0.95rem; font-weight: 600; }
-    .double-arena {
-      display: flex; align-items: center; justify-content: center;
-      gap: 16px; width: 100%; margin-bottom: 12px;
+    .achievement-toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(30px);
+      background: linear-gradient(135deg, #1a2e10, #1a0a30);
+      border: 2px solid var(--accent3); border-radius: var(--radius);
+      padding: 14px 24px; font-size: 1rem; font-weight: 700;
+      color: var(--accent3); z-index: 800; opacity: 0;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      white-space: nowrap;
     }
-    .double-card {
-      position: relative; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .double-card-left {
-      width: 190px; height: 190px;
-      background: radial-gradient(circle at 38% 38%, #1e2540, #0d0f1a);
-      box-shadow: 0 0 0 4px var(--accent), 0 16px 48px rgba(88,204,2,0.25);
-    }
-    .double-card-right {
-      width: 268px; height: 268px;
-      background: radial-gradient(circle at 62% 38%, #221530, #0d0f1a);
-      box-shadow: 0 0 0 4px var(--accent2), 0 16px 48px rgba(206,130,255,0.25);
-    }
-    .double-word-center {
-      font-size: 1.25rem; font-weight: 800; text-align: center;
-      padding: 20px; line-height: 1.3; color: var(--text); max-width: 156px; z-index: 1;
-    }
-    .double-dir-badge {
-      position: absolute; bottom: 13%; left: 50%; transform: translateX(-50%);
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent); opacity: 0.9; z-index: 1;
-    }
-    .double-timer-svg {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; transform: rotate(-90deg);
-    }
-    .double-timer-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 7; }
-    .double-timer-arc  { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke 0.4s; }
-    .double-option {
-      position: absolute;
-      background: var(--surface2); border: 2px solid var(--border);
-      border-radius: 14px; padding: 8px 10px;
-      font-size: 0.88rem; font-weight: 700; cursor: pointer;
-      transition: all 0.14s; max-width: 108px; text-align: center;
-      line-height: 1.25; word-break: break-word; color: var(--text); z-index: 2;
-    }
-    .double-option:hover:not(:disabled) { border-color: var(--accent2); background: rgba(206,130,255,0.13); transform: scale(1.07); }
-    .double-option.correct { border-color: var(--accent); background: rgba(88,204,2,0.2); color: var(--accent); }
-    .double-option.wrong   { border-color: var(--danger); background: rgba(255,75,75,0.16); color: var(--danger); }
-    .double-vs { font-size: 1.5rem; color: var(--text-muted); flex-shrink: 0; }
-    @keyframes dblCardIn {
-      from { opacity:0; transform: scale(0.65) rotate(-10deg); }
-      to   { opacity:1; transform: scale(1) rotate(0deg); }
-    }
-    @keyframes dblShake {
-      0%,100% { transform:translateX(0); }
-      20% { transform:translateX(-9px); } 40% { transform:translateX(9px); }
-      60% { transform:translateX(-5px); } 80% { transform:translateX(5px); }
-    }
-    .dbl-in    { animation: dblCardIn 0.38s cubic-bezier(0.34,1.56,0.64,1) both; }
-    .dbl-shake { animation: dblShake 0.36s ease both; }
+    .achievement-toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
     .mode-card {
       background: var(--surface); border: 2px solid var(--border);
       border-radius: var(--radius); padding: 28px 20px;
@@ -682,6 +644,10 @@
   </div>
   <div class="header-stats">
     <div class="stat-chip">
+      <span>🔥</span>
+      <span id="stat-daily-streak">0</span>&nbsp;Tage
+    </div>
+    <div class="stat-chip">
       <span class="dot dot-orange"></span>
       <span id="stat-streak">0</span>&nbsp;🔥
     </div>
@@ -727,34 +693,23 @@
       <div class="level-card lv1" onclick="selectLevel(1)">
         <div class="lv-icon">📖</div>
         <div class="lv-badge">Level 1</div>
-        <div class="lv-name">Unidad 1</div>
-        <div class="lv-desc">Begr&#252;&#223;ung, Vorstellung, Zahlen. 54 W&#246;rter.</div>
+        <div class="lv-name">Einsteiger</div>
+        <div class="lv-desc">Unidad 1 — Begrüßung, Vorstellung, Zahlen. 54 Wörter.</div>
       </div>
       <div class="level-card lv2" onclick="selectLevel(2)">
-        <div class="lv-icon">&#9997;&#65039;</div>
+        <div class="lv-icon">✍️</div>
         <div class="lv-badge">Level 2</div>
-        <div class="lv-name">Unidades 1&#8211;2</div>
-        <div class="lv-desc">Familie, Schule, Freizeit. 137 W&#246;rter.</div>
+        <div class="lv-name">Fortgeschritten</div>
+        <div class="lv-desc">Unidades 1–3 — Familie, Schule, Alltag. 208 Wörter.</div>
       </div>
       <div class="level-card lv3" onclick="selectLevel(3)">
-        <div class="lv-icon">&#128483;&#65039;</div>
+        <div class="lv-icon">🎓</div>
         <div class="lv-badge">Level 3</div>
-        <div class="lv-name">Unidades 1&#8211;3</div>
-        <div class="lv-desc">Alltag &amp; Stadt dazu. 208 W&#246;rter.</div>
-      </div>
-      <div class="level-card lv4" onclick="selectLevel(4)">
-        <div class="lv-icon">&#127757;</div>
-        <div class="lv-badge">Level 4</div>
-        <div class="lv-name">Unidades 1&#8211;4</div>
-        <div class="lv-desc">Reisen &amp; Umwelt. 317 W&#246;rter.</div>
-      </div>
-      <div class="level-card lv5" onclick="selectLevel(5)">
-        <div class="lv-icon">&#127891;</div>
-        <div class="lv-badge">Level 5</div>
-        <div class="lv-name">Unidades 1&#8211;5</div>
-        <div class="lv-desc">Alles &#8212; alle 425 W&#246;rter aus dem Buch.</div>
+        <div class="lv-name">Experte</div>
+        <div class="lv-desc">Alle Unidades 1–5 — Alle 425 Wörter aus dem Buch.</div>
       </div>
     </div>
+  </div>
 
   <!-- MODE SELECT -->
   <div id="screen-mode" class="screen">
@@ -805,9 +760,9 @@
     </div>
     <div class="mode-section-divider">Herausforderung</div>
     <div class="mode-card-featured" id="mode-double" onclick="selectMode('double')">
-      <div class="mode-icon">🔀</div>
-      <div class="mode-name">Double</div>
-      <div class="mode-desc">Tippe die Übersetzung — Richtung wechselt zufällig pro Frage: ES→DE und DE→ES.</div>
+      <div class="mode-icon">🎯</div>
+      <div class="mode-name">Dobble</div>
+      <div class="mode-desc">Finde das gemeinsame Wortpaar auf zwei Karten — so schnell wie möglich! Inspiriert vom Kartenspiel Dobble/Spot-it.</div>
     </div>
     <button class="btn-primary" onclick="startExercise()">Starten →</button>
   </div>
@@ -939,27 +894,26 @@
     </div>
   </div>
 
-  <!-- DOUBLE GAME -->
+  <!-- DOBBLE GAME -->
   <div id="screen-double" class="screen">
-    <button class="back-link" onclick="stopDouble(); goTo('mode')">← Abbrechen</button>
-    <div class="exercise-label">🔀 Double · <span id="double-level-label"></span></div>
-    <div class="double-topbar">
-      <div class="double-pts" id="double-pts">0</div>
-      <div class="double-combo" id="double-combo">×1</div>
-      <div class="double-counter-txt" id="double-counter">1 / 15</div>
+    <button class="back-link" onclick="stopDobble(); goTo('mode')">← Abbrechen</button>
+    <div class="exercise-label">🎯 Dobble · <span id="dobble-level-label"></span></div>
+    <div class="dobble-topbar">
+      <div class="dobble-pts" id="dobble-pts">0</div>
+      <div class="dobble-combo" id="dobble-combo">×1</div>
+      <div class="dobble-counter" id="dobble-counter">1 / 15</div>
     </div>
-    <div class="double-arena">
-      <div class="double-card double-card-left" id="double-card-left">
-        <svg class="double-timer-svg" viewBox="0 0 190 190">
-          <circle class="double-timer-track" cx="95" cy="95" r="87"/>
-          <circle class="double-timer-arc"  id="double-timer-arc" cx="95" cy="95" r="87"/>
-        </svg>
-        <div class="double-word-center" id="double-word-src"></div>
-        <div class="double-dir-badge" id="double-dir-badge">ES → DE</div>
+    <div class="dobble-arena">
+      <div class="dobble-card dobble-card-left" id="dobble-card-left">
+        <canvas class="dobble-canvas" id="dobble-canvas-left" width="260" height="260" onclick="dobbleHandleClick('left', event)"></canvas>
       </div>
-      <div class="double-vs">⚡</div>
-      <div class="double-card double-card-right" id="double-card-right"></div>
+      <div class="dobble-vs">⚡</div>
+      <div class="dobble-card dobble-card-right" id="dobble-card-right">
+        <canvas class="dobble-canvas" id="dobble-canvas-right" width="260" height="260" onclick="dobbleHandleClick('right', event)"></canvas>
+      </div>
     </div>
+    <div class="dobble-hint" id="dobble-hint"></div>
+    <div class="dobble-timer-bar"><div id="dobble-timer-fill" class="dobble-timer-fill"></div></div>
   </div>
 
   <!-- RESULTS -->
@@ -1021,6 +975,7 @@
 </div>
 
 <div class="streak-popup" id="streak-popup">🔥 <span id="streak-popup-count">3</span> in Folge!</div>
+<div class="achievement-toast" id="achievement-toast">🏆 Achievement!</div>
 
 <script>
 const VOCAB = [
@@ -1453,17 +1408,13 @@ const VOCAB = [
 
 const LEVEL_SETS = {
   1: VOCAB.filter(v => v.unidad === 1),
-  2: VOCAB.filter(v => v.unidad <= 2),
-  3: VOCAB.filter(v => v.unidad <= 3),
-  4: VOCAB.filter(v => v.unidad <= 4),
-  5: VOCAB,
+  2: VOCAB.filter(v => v.unidad <= 3),
+  3: VOCAB,
 };
 const LEVEL_NAMES = {
-  1: 'Level 1 · Unidad 1',
-  2: 'Level 2 · Unidades 1–2',
-  3: 'Level 3 · Unidades 1–3',
-  4: 'Level 4 · Unidades 1–4',
-  5: 'Level 5 · Unidades 1–5',
+  1: 'Level 1 · Einsteiger',
+  2: 'Level 2 · Fortgeschritten',
+  3: 'Level 3 · Experte',
 };
 
 let state = {
@@ -1476,6 +1427,60 @@ let state = {
   totalXP: 0,
   awaitingNext: false,
 };
+
+// Daily streak
+const today = new Date().toDateString();
+let dailyStreak = parseInt(localStorage.getItem('dailyStreak') || '0');
+const lastDay = localStorage.getItem('lastDay') || '';
+if (lastDay === today) {
+  // same day, keep streak
+} else if (lastDay === new Date(Date.now() - 86400000).toDateString()) {
+  dailyStreak++;
+  localStorage.setItem('dailyStreak', dailyStreak);
+  localStorage.setItem('lastDay', today);
+} else if (lastDay !== today) {
+  dailyStreak = 1;
+  localStorage.setItem('dailyStreak', dailyStreak);
+  localStorage.setItem('lastDay', today);
+}
+
+// Achievements
+const ACHIEVEMENTS = [
+  { id: 'first_correct',   check: s => s.correct >= 1,                         label: '🌟 Erste richtige Antwort!' },
+  { id: 'streak_3',        check: s => s.streak >= 3,                           label: '🔥 3er Streak!' },
+  { id: 'streak_5',        check: s => s.streak >= 5,                           label: '🔥🔥 5er Streak!' },
+  { id: 'perfect_10',      check: s => s.correct >= 10 && s.wrong === 0,        label: '⭐ 10 richtig ohne Fehler!' },
+  { id: 'xp_50',           check: s => s.xp >= 50,                             label: '💫 50 XP verdient!' },
+];
+const unlockedAchievements = new Set(JSON.parse(localStorage.getItem('achievements') || '[]'));
+
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(a => {
+    if (!unlockedAchievements.has(a.id) && a.check(state)) {
+      unlockedAchievements.add(a.id);
+      localStorage.setItem('achievements', JSON.stringify([...unlockedAchievements]));
+      showAchievement(a.label);
+    }
+  });
+}
+
+function showAchievement(label) {
+  const el = document.getElementById('achievement-toast');
+  el.textContent = label;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function showXpFloat(amount, anchorEl) {
+  const el = document.createElement('div');
+  el.className = 'xp-float';
+  el.textContent = '+' + amount + ' XP';
+  const rect = (anchorEl || document.getElementById('stat-xp')).getBoundingClientRect();
+  el.style.left = rect.left + 'px';
+  el.style.top = (rect.top - 20) + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1300);
+}
 
 function goTo(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1512,150 +1517,236 @@ function startExercise() {
   else startQuiz();
 }
 
-// ── DOUBLE GAME ──
-const DBL_TIME = 9000;
-const DBL_POSITIONS = [
-  { top: '9%',    left: '50%',  transform: 'translateX(-50%)' },
-  { top: '50%',   right: '3%',  transform: 'translateY(-50%)' },
-  { bottom: '9%', left: '50%',  transform: 'translateX(-50%)' },
-  { top: '50%',   left: '3%',   transform: 'translateY(-50%)' },
-];
+// ── DOBBLE GAME ──
+let dobble = {
+  rounds: [], index: 0, pts: 0, combo: 1,
+  correctCount: 0, wrongCount: 0,
+  selectedEs: null, running: false,
+  timerStart: 0, timerDuration: 10000, timerRaf: null,
+  currentRound: null,
+  hitZones: { left: [], right: [] },
+};
+const DOBBLE_ROUNDS = 15;
+const DOBBLE_WORDS = 6;
 
-let dbl = { items:[], index:0, pts:0, combo:1, t0:0, raf:null, running:false, locked:false };
+function startDoubleQuiz() { startDobble(); }
 
-function startDoubleQuiz() {
-  dbl.items = shuffle([...state.currentSet]).map(item => ({
-    ...item, _dir: Math.random() < 0.5 ? 'es-de' : 'de-es'
-  }));
-  dbl.index = 0; dbl.pts = 0; dbl.combo = 1;
-  dbl.running = true; dbl.locked = false;
+function startDobble() {
+  const vocab = shuffle([...state.currentSet]);
+  dobble.rounds = Array.from({length: DOBBLE_ROUNDS}, () =>
+    generateDobbleRound(vocab, DOBBLE_WORDS));
+  dobble.index = 0; dobble.pts = 0; dobble.combo = 1;
+  dobble.correctCount = 0; dobble.wrongCount = 0;
+  dobble.running = true; dobble.selectedEs = null;
   state.correct = 0; state.wrong = 0; state.xp = 0;
-  document.getElementById('double-level-label').textContent = LEVEL_NAMES[state.level];
+  document.getElementById('dobble-level-label').textContent = LEVEL_NAMES[state.level];
   goTo('double');
-  dblRender();
+  dobbleRender();
 }
 
-function stopDouble() {
-  dbl.running = false;
-  if (dbl.raf) { cancelAnimationFrame(dbl.raf); dbl.raf = null; }
+function stopDobble() {
+  dobble.running = false;
+  if (dobble.timerRaf) { cancelAnimationFrame(dobble.timerRaf); dobble.timerRaf = null; }
 }
 
-function dblRender() {
-  if (!dbl.running) return;
-  const item = dbl.items[dbl.index];
-  const isEsDE = item._dir === 'es-de';
-  const src = isEsDE ? item.es : item.de;
-  const correct = isEsDE ? shortDE(item.de) : item.es;
+function generateDobbleRound(vocab, n) {
+  const correct = shuffle([...vocab])[0];
+  const pool = shuffle(vocab.filter(v => v !== correct));
+  const leftFillers = pool.slice(0, n - 1);
+  const leftIds = new Set(leftFillers.map(v => v.es));
+  const rightFillers = shuffle(vocab.filter(v => v !== correct && !leftIds.has(v.es))).slice(0, n - 1);
+  return {
+    left:  shuffle([correct.es,          ...leftFillers.map(v => v.es)]),
+    right: shuffle([shortDE(correct.de), ...rightFillers.map(v => shortDE(v.de))]),
+    answerEs: correct.es,
+    answerDe: shortDE(correct.de),
+  };
+}
 
-  document.getElementById('double-counter').textContent = (dbl.index + 1) + ' / ' + dbl.items.length;
-  document.getElementById('double-pts').textContent = dbl.pts;
-  dblUpdateCombo();
+function dobbleRender() {
+  if (!dobble.running) return;
+  const r = dobble.rounds[dobble.index];
+  dobble.currentRound = r;
+  dobble.selectedEs = null;
+  document.getElementById('dobble-pts').textContent = dobble.pts;
+  document.getElementById('dobble-combo').textContent = '×' + dobble.combo;
+  document.getElementById('dobble-counter').textContent = (dobble.index + 1) + ' / ' + DOBBLE_ROUNDS;
+  const hint = document.getElementById('dobble-hint');
+  hint.textContent = 'Finde das übereinstimmende Wortpaar!';
+  hint.style.color = 'var(--text-muted)';
 
-  const lCard = document.getElementById('double-card-left');
-  document.getElementById('double-word-src').textContent = src;
-  document.getElementById('double-dir-badge').textContent = isEsDE ? 'ES → DE' : 'DE → ES';
-  lCard.className = 'double-card double-card-left dbl-in';
+  dobbleDrawCard('left',  r.left,  'var(--accent)',  '#58cc02');
+  dobbleDrawCard('right', r.right, 'var(--accent2)', '#ce82ff');
+  dobbleStartTimer();
+}
 
-  const distractors = shuffle(
-    dbl.items.filter(x => x !== item).map(x => isEsDE ? shortDE(x.de) : x.es)
-  ).slice(0, 3);
-  const options = shuffle([correct, ...distractors]);
+function dobbleDrawCard(side, words, strokeColor) {
+  const canvas = document.getElementById('dobble-canvas-' + side);
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height, R = W / 2;
+  ctx.clearRect(0, 0, W, H);
 
-  const rCard = document.getElementById('double-card-right');
-  rCard.innerHTML = '';
-  rCard.className = 'double-card double-card-right dbl-in';
-  options.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'double-option';
-    Object.assign(btn.style, DBL_POSITIONS[i]);
-    btn.textContent = opt;
-    btn.onclick = () => dblAnswer(btn, opt, correct);
-    rCard.appendChild(btn);
+  ctx.beginPath(); ctx.arc(R, R, R - 4, 0, Math.PI * 2);
+  ctx.fillStyle = side === 'left' ? '#1e2540' : '#221530';
+  ctx.fill();
+  ctx.strokeStyle = strokeColor; ctx.lineWidth = 4; ctx.stroke();
+
+  const zones = [];
+  words.forEach((word, i) => {
+    const angle = (i / words.length) * 2 * Math.PI - Math.PI / 2;
+    const r = R * (i % 2 === 0 ? 0.52 : 0.72);
+    const x = R + r * Math.cos(angle);
+    const y = R + r * Math.sin(angle);
+    const isSelected = side === 'left' && word === dobble.selectedEs;
+    const fontSize = word.length > 12 ? 10 : word.length > 8 ? 11 : 13;
+
+    ctx.font = `${isSelected ? 'bold' : '600'} ${fontSize}px 'Segoe UI', system-ui`;
+    const tw = ctx.measureText(word).width;
+    const bw = tw + 14, bh = fontSize + 10;
+    const bx = x - bw / 2, by = y - bh / 2;
+
+    ctx.fillStyle = isSelected ? 'rgba(88,204,2,0.25)' : 'rgba(37,40,64,0.9)';
+    ctx.strokeStyle = isSelected ? '#58cc02' : (side === 'left' ? '#2e3250' : '#3a2060');
+    ctx.lineWidth = isSelected ? 2 : 1;
+    roundRect(ctx, bx, by, bw, bh, 6);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = isSelected ? '#58cc02' : '#e8eaf6';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(word, x, y);
+
+    zones.push({ word, x, y, bx, by, bw, bh });
   });
-
-  dblStartTimer();
+  dobble.hitZones[side] = zones;
 }
 
-function dblStartTimer() {
-  dbl.locked = false;
-  dbl.t0 = performance.now();
-  const arc = document.getElementById('double-timer-arc');
-  const C = 2 * Math.PI * 87;
-  arc.style.strokeDasharray = C;
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
 
+function dobbleStartTimer() {
+  if (dobble.timerRaf) cancelAnimationFrame(dobble.timerRaf);
+  dobble.timerStart = performance.now();
   function tick(now) {
-    if (!dbl.running) return;
-    const ratio = Math.max(0, 1 - (now - dbl.t0) / DBL_TIME);
-    arc.style.strokeDashoffset = C * (1 - ratio);
-    arc.style.stroke = ratio > 0.45 ? 'var(--accent)' : ratio > 0.2 ? 'var(--accent3)' : 'var(--danger)';
-    if (ratio <= 0 && !dbl.locked) { dbl.locked = true; dblTimeout(); return; }
-    if (ratio > 0) dbl.raf = requestAnimationFrame(tick);
+    if (!dobble.running) return;
+    const elapsed = now - dobble.timerStart;
+    const pct = Math.max(0, 1 - elapsed / dobble.timerDuration);
+    document.getElementById('dobble-timer-fill').style.width = (pct * 100) + '%';
+    document.getElementById('dobble-timer-fill').style.background =
+      pct > 0.4 ? 'linear-gradient(90deg,var(--accent),#85e620)' :
+      pct > 0.2 ? 'linear-gradient(90deg,#ff9600,#ff9600)' : 'linear-gradient(90deg,var(--danger),var(--danger))';
+    if (pct <= 0) { dobbleTimeout(); return; }
+    dobble.timerRaf = requestAnimationFrame(tick);
   }
-  dbl.raf = requestAnimationFrame(tick);
+  dobble.timerRaf = requestAnimationFrame(tick);
 }
 
-function dblAnswer(btn, chosen, correct) {
-  if (dbl.locked) return;
-  dbl.locked = true;
-  if (dbl.raf) { cancelAnimationFrame(dbl.raf); dbl.raf = null; }
-
-  document.querySelectorAll('.double-option').forEach(b => {
-    b.disabled = true;
-    if (b.textContent === correct) b.classList.add('correct');
-  });
-
-  if (chosen === correct) {
-    btn.classList.add('correct');
-    state.correct++;
-    const timeBonus = Math.round((1 - (performance.now() - dbl.t0) / DBL_TIME) * 100);
-    const pts = Math.max(10, 50 + timeBonus) * dbl.combo;
-    dbl.pts += pts;
-    dbl.combo = Math.min(8, dbl.combo + 1);
-    state.xp += pts;
-    dblUpdateCombo(true);
-    document.getElementById('double-pts').textContent = dbl.pts;
-    document.getElementById('stat-streak').textContent = state.correct;
-  } else {
-    btn.classList.add('wrong');
-    state.wrong++;
-    dbl.combo = 1;
-    document.getElementById('double-card-left').classList.add('dbl-shake');
-    dblUpdateCombo();
-  }
-  setTimeout(dblAdvance, 850);
-}
-
-function dblTimeout() {
+function dobbleTimeout() {
+  if (!dobble.running) return;
+  dobble.wrongCount++;
   state.wrong++;
-  dbl.combo = 1;
-  dblUpdateCombo();
-  const item = dbl.items[dbl.index];
-  const correct = item._dir === 'es-de' ? shortDE(item.de) : item.es;
-  document.querySelectorAll('.double-option').forEach(b => {
-    b.disabled = true;
-    if (b.textContent === correct) b.classList.add('correct');
-  });
-  setTimeout(dblAdvance, 850);
+  dobble.combo = 1;
+  const hint = document.getElementById('dobble-hint');
+  hint.textContent = '⏱ Zeit! Die Antwort war: ' + dobble.currentRound.answerEs + ' = ' + dobble.currentRound.answerDe;
+  hint.style.color = 'var(--danger)';
+  dobble.selectedEs = null;
+  setTimeout(() => dobbleNext(), 1500);
 }
 
-function dblAdvance() {
-  dbl.index++;
-  if (dbl.index >= dbl.items.length) {
-    stopDouble();
+function dobbleHandleClick(side, event) {
+  if (!dobble.running || !dobble.currentRound) return;
+  const canvas = event.currentTarget;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mx = (event.clientX - rect.left) * scaleX;
+  const my = (event.clientY - rect.top) * scaleY;
+  const zones = dobble.hitZones[side];
+  const hit = zones.find(z => mx >= z.bx && mx <= z.bx + z.bw && my >= z.by && my <= z.by + z.bh);
+  if (!hit) return;
+
+  const hint = document.getElementById('dobble-hint');
+
+  if (side === 'left') {
+    dobble.selectedEs = hit.word;
+    dobbleDrawCard('left',  dobble.currentRound.left,  'var(--accent)',  '#58cc02');
+    hint.textContent = '✓ Gewählt: ' + hit.word + ' — Jetzt das deutsche Wort wählen!';
+    hint.style.color = 'var(--text-muted)';
+  } else {
+    if (!dobble.selectedEs) {
+      hint.textContent = 'Wähle zuerst ein spanisches Wort links!';
+      return;
+    }
+    const r = dobble.currentRound;
+    if (dobble.selectedEs === r.answerEs && hit.word === r.answerDe) {
+      // CORRECT
+      if (dobble.timerRaf) cancelAnimationFrame(dobble.timerRaf);
+      const elapsed = performance.now() - dobble.timerStart;
+      const speedBonus = Math.round(200 * Math.max(0, 1 - elapsed / dobble.timerDuration));
+      const pts = (100 + speedBonus) * dobble.combo;
+      dobble.pts += pts;
+      dobble.correctCount++;
+      state.correct++;
+      state.streak++;
+      const xpGain = 10 + (state.streak >= 3 ? 5 : 0);
+      state.xp += xpGain;
+      document.getElementById('stat-streak').textContent = state.streak;
+      document.getElementById('stat-xp').textContent = state.totalXP + state.xp;
+      showXpFloat(xpGain);
+      if (state.streak % 3 === 0) showStreakPopup(state.streak);
+      dobble.combo = Math.min(4, 1 + Math.floor(dobble.correctCount / 3));
+      document.getElementById('dobble-pts').textContent = dobble.pts;
+      document.getElementById('dobble-combo').textContent = '×' + dobble.combo;
+      hint.textContent = '✅ Richtig! +' + pts + ' Punkte';
+      hint.style.color = 'var(--accent)';
+      checkAchievements();
+      dobbleFlashCorrect();
+      setTimeout(() => dobbleNext(), 800);
+    } else {
+      // WRONG
+      state.wrong++;
+      dobble.combo = 1;
+      dobble.selectedEs = null;
+      hint.textContent = '❌ Falsch! Versuch es nochmal.';
+      hint.style.color = 'var(--danger)';
+      dobbleDrawCard('left', dobble.currentRound.left, 'var(--accent)', '#58cc02');
+      document.getElementById('dobble-combo').textContent = '×1';
+      dobble.timerStart -= 1500;
+    }
+  }
+}
+
+function dobbleFlashCorrect() {
+  ['left','right'].forEach(side => {
+    const canvas = document.getElementById('dobble-canvas-' + side);
+    canvas.style.transition = 'box-shadow 0.2s';
+    canvas.style.boxShadow = '0 0 0 6px var(--accent), 0 0 40px rgba(88,204,2,0.5)';
+    setTimeout(() => canvas.style.boxShadow = '', 400);
+  });
+}
+
+function dobbleNext() {
+  dobble.index++;
+  if (dobble.index >= DOBBLE_ROUNDS) {
+    dobble.running = false;
+    state.correct = dobble.correctCount;
+    state.wrong = dobble.wrongCount;
     state.totalXP += state.xp;
     document.getElementById('stat-xp').textContent = state.totalXP;
     showResults();
   } else {
-    dblRender();
-  }
-}
-
-function dblUpdateCombo(pop = false) {
-  const el = document.getElementById('double-combo');
-  el.textContent = '×' + dbl.combo;
-  if (pop) {
-    el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
-    setTimeout(() => el.classList.remove('pop'), 200);
+    dobble.selectedEs = null;
+    dobbleRender();
   }
 }
 
@@ -1790,9 +1881,13 @@ function handleCorrect(item) {
   state.correct++;
   state.streak++;
   const bonus = state.streak >= 3 ? 5 : 0;
-  state.xp += 10 + bonus;
+  const xpGain = 10 + bonus;
+  state.xp += xpGain;
   document.getElementById('stat-streak').textContent = state.streak;
+  document.getElementById('stat-xp').textContent = state.totalXP + state.xp;
+  showXpFloat(xpGain);
   if (state.streak > 0 && state.streak % 3 === 0) showStreakPopup(state.streak);
+  checkAchievements();
   showFeedback(true, item);
 }
 
@@ -1962,43 +2057,34 @@ function shuffle(arr) {
 }
 
 function modeLabel(m) {
-  return { flash:'Karteikarten', 'mc-es-de':'Spanisch→Deutsch', 'mc-de-es':'Deutsch→Spanisch', type:'Eintippen', verb:'Verbkonjugation', memory:'Memory', asteroids:'Asteroiden', race:'Autorennen', double:'Double' }[m] || m;
+  return { flash:'Karteikarten', 'mc-es-de':'Spanisch→Deutsch', 'mc-de-es':'Deutsch→Spanisch', type:'Eintippen', verb:'Verbkonjugation', memory:'Memory', asteroids:'Asteroiden', race:'Autorennen', double:'Dobble' }[m] || m;
 }
 
 updateHeartsDisplay();
+document.getElementById('stat-daily-streak').textContent = dailyStreak;
 
 // ── VERBS DATA ──
 const VERBS = [
-  { inf:"resistir",     subject:"El pueblo",          tense:"Pret. Indefinido", person:"3ª sing.",
-    sentence:"El pueblo ___ durante años de represión.",              answer:"resistió",       ctx:"resistir (reg. -IR): resistió" },
-  { inf:"tomar",        subject:"Los militares",       tense:"Pret. Indefinido", person:"3ª plur.",
-    sentence:"Los militares ___ el poder en 1973.",                   answer:"tomaron",        ctx:"tomar (reg. -AR): tomaron" },
-  { inf:"exiliarse",    subject:"Muchos artistas",     tense:"Pret. Indefinido", person:"3ª plur.",
-    sentence:"Muchos artistas se ___ tras el golpe.",                 answer:"exiliaron",      ctx:"exiliar(se) (reg. -AR): exiliaron" },
-  { inf:"prohibir",     subject:"La junta",            tense:"Pret. Indefinido", person:"3ª sing.",
-    sentence:"La junta ___ libros y canciones.",                      answer:"prohibió",       ctx:"prohibir (reg. -IR): prohibió" },
-  { inf:"desaparecer",  subject:"Miles de personas",   tense:"Pret. Indefinido", person:"3ª plur.",
-    sentence:"Miles de personas ___ durante la dictadura.",           answer:"desaparecieron", ctx:"desaparecer (reg. -ER): desaparecieron" },
-  { inf:"huir",         subject:"Skármeta",            tense:"Pret. Indefinido", person:"3ª sing.",
-    sentence:"Skármeta ___ al exilio en 1973.",                       answer:"huyó",           ctx:"huir (irr. y→y): huyó" },
-  { inf:"perseguir",    subject:"La DINA",             tense:"Pret. Indefinido", person:"3ª sing.",
-    sentence:"La DINA ___ a los opositores.",                         answer:"persiguió",      ctx:"perseguir (irr. e→i): persiguió" },
-  { inf:"silenciar",    subject:"La censura",          tense:"Pret. Indefinido", person:"3ª sing.",
-    sentence:"La censura ___ toda voz crítica.",                      answer:"silenció",       ctx:"silenciar (reg. -AR): silenció" },
-  { inf:"luchar",       subject:"El movimiento",       tense:"Imperfecto",       person:"3ª sing.",
-    sentence:"El movimiento ___ por la democracia.",                  answer:"luchaba",        ctx:"luchar (-AR imperfecto): -aba" },
-  { inf:"sufrir",       subject:"La población",        tense:"Imperfecto",       person:"3ª sing.",
-    sentence:"La población ___ bajo el régimen militar.",             answer:"sufría",         ctx:"sufrir (-IR imperfecto): -ía" },
-  { inf:"vivir",        subject:"Los exiliados",       tense:"Imperfecto",       person:"3ª plur.",
-    sentence:"Los exiliados ___ lejos de su patria.",                 answer:"vivían",         ctx:"vivir (-IR imperfecto plur.): -ían" },
-  { inf:"denunciar",    subject:"Los escritores",      tense:"Imperfecto",       person:"3ª plur.",
-    sentence:"Los escritores ___ las injusticias.",                   answer:"denunciaban",    ctx:"denunciar (-AR imperfecto plur.): -aban" },
-  { inf:"narrar",       subject:"Skármeta",            tense:"Presente",         person:"3ª sing.",
-    sentence:"Skármeta ___ la realidad chilena con compromiso.",      answer:"narra",          ctx:"narrar (-AR presente): -a" },
-  { inf:"preservar",    subject:"La literatura",       tense:"Presente",         person:"3ª sing.",
-    sentence:"La literatura ___ la memoria colectiva.",               answer:"preserva",       ctx:"preservar (-AR presente): -a" },
-  { inf:"recordar",     subject:"Las familias",        tense:"Presente",         person:"3ª plur.",
-    sentence:"Las familias ___ a los desaparecidos.",                 answer:"recuerdan",      ctx:"recordar (o→ue diptongación): recuerdan" },
+  { inf:"hablar",     subject:"Yo",           tense:"Presente",       person:"1ª sing.", sentence:"Yo ___ español todos los días.",          answer:"hablo",      ctx:"hablar (reg. -AR): hablo" },
+  { inf:"hablar",     subject:"Ella",          tense:"Presente",       person:"3ª sing.", sentence:"Ella ___ alemán con sus amigos.",          answer:"habla",      ctx:"hablar (reg. -AR): habla" },
+  { inf:"estudiar",   subject:"Nosotros",      tense:"Presente",       person:"1ª plur.", sentence:"Nosotros ___ español en clase.",           answer:"estudiamos", ctx:"estudiar (reg. -AR): estudiamos" },
+  { inf:"vivir",      subject:"Tú",            tense:"Presente",       person:"2ª sing.", sentence:"¿Dónde ___ tú?",                          answer:"vives",      ctx:"vivir (reg. -IR): vives" },
+  { inf:"ser",        subject:"Yo",            tense:"Presente",       person:"1ª sing.", sentence:"Yo ___ de Alemania.",                     answer:"soy",        ctx:"ser (irr.): soy" },
+  { inf:"ser",        subject:"Él",            tense:"Presente",       person:"3ª sing.", sentence:"Él ___ mi mejor amigo.",                  answer:"es",         ctx:"ser (irr.): es" },
+  { inf:"tener",      subject:"Yo",            tense:"Presente",       person:"1ª sing.", sentence:"Yo ___ catorce años.",                    answer:"tengo",      ctx:"tener (irr. -go): tengo" },
+  { inf:"tener",      subject:"Tú",            tense:"Presente",       person:"2ª sing.", sentence:"¿Cuántos años ___?",                      answer:"tienes",     ctx:"tener (irr.): tienes" },
+  { inf:"gustar",     subject:"(A mí)",        tense:"Presente",       person:"3ª sing.", sentence:"Me ___ mucho el fútbol.",                 answer:"gusta",      ctx:"gustar: me gusta" },
+  { inf:"ir",         subject:"Yo",            tense:"Presente",       person:"1ª sing.", sentence:"Yo ___ al instituto en autobús.",          answer:"voy",        ctx:"ir (irr.): voy" },
+  { inf:"ir",         subject:"Nosotros",      tense:"Presente",       person:"1ª plur.", sentence:"Nosotros ___ de compras el sábado.",       answer:"vamos",      ctx:"ir (irr.): vamos" },
+  { inf:"poder",      subject:"Yo",            tense:"Presente",       person:"1ª sing.", sentence:"Yo no ___ salir hoy.",                    answer:"puedo",      ctx:"poder (-ue- irr.): puedo" },
+  { inf:"querer",     subject:"Tú",            tense:"Presente",       person:"2ª sing.", sentence:"¿___ venir al cine?",                     answer:"quieres",    ctx:"querer (-ie- irr.): quieres" },
+  { inf:"hacer",      subject:"Yo",            tense:"Presente",       person:"1ª sing.", sentence:"Yo ___ los deberes por la tarde.",         answer:"hago",       ctx:"hacer (irr. -go): hago" },
+  { inf:"levantarse", subject:"Yo",            tense:"Presente",       person:"1ª sing.", sentence:"Yo me ___ a las siete.",                  answer:"levanto",    ctx:"levantarse (refl. -AR): me levanto" },
+  { inf:"hablar",     subject:"Yo",            tense:"Pretérito Ind.", person:"1ª sing.", sentence:"Ayer yo ___ con mi amigo.",                answer:"hablé",      ctx:"hablar (pret. -AR): hablé" },
+  { inf:"vivir",      subject:"Ellos",         tense:"Pretérito Ind.", person:"3ª plur.", sentence:"Ellos ___ en Madrid el año pasado.",       answer:"vivieron",   ctx:"vivir (pret. -IR plur.): vivieron" },
+  { inf:"ir",         subject:"Nosotros",      tense:"Pretérito Ind.", person:"1ª plur.", sentence:"Nosotros ___ al parque el domingo.",       answer:"fuimos",     ctx:"ir (pret. irr.): fuimos" },
+  { inf:"ser",        subject:"Mi padre",      tense:"Imperfecto",     person:"3ª sing.", sentence:"Mi padre ___ médico.",                    answer:"era",        ctx:"ser (imperf. irr.): era" },
+  { inf:"vivir",      subject:"Mi familia",    tense:"Imperfecto",     person:"3ª sing.", sentence:"Mi familia ___ en Berlín.",               answer:"vivía",      ctx:"vivir (imperf. -IR): vivía" },
 ];
 
 // ── VERB CONJUGATION ──
@@ -2708,8 +2794,11 @@ function updateAstScore() {
   const pct = (astState.score / 10) * 100;
   document.getElementById('ast-score-fill').style.width = pct + '%';
   document.getElementById('ast-score-num').textContent = astState.score + ' / 10';
-  const stars = astState.speed < 1.5 ? '⭐' : astState.speed < 2.5 ? '⭐⭐' : astState.speed < 3.8 ? '⭐⭐⭐' : '⭐⭐⭐⭐';
-  document.getElementById('ast-speed-label').textContent = 'Geschwindigkeit: ' + stars;
+  const sl = astSpeedLevel;
+  [1,2,3].forEach(n => {
+    const el = document.getElementById('ast-star-' + n);
+    if (el) el.classList.toggle('on', n <= sl);
+  });
 }
 
 function astShowWin() {
