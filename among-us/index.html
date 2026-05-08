@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Quién es el Impostor?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Animated star field -->
+<div id="stars-bg" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — START
+══════════════════════════════════════ -->
+<div id="screen-start" class="screen active">
+  <div class="logo-area">
+    <div class="logo-blob" aria-hidden="true">
+      <div class="blob-visor"></div>
+      <div class="blob-backpack"></div>
+    </div>
+    <h1>¿Quién es el<br><span class="impostor-glow">Impostor?</span></h1>
+    <p class="tagline">Das spanische Lernspiel für den Unterricht</p>
+  </div>
+
+  <div class="setup-card glass">
+    <!-- Player count -->
+    <div class="setup-row">
+      <label class="setup-label">👥 Spielerzahl</label>
+      <div class="stepper">
+        <button class="stepper-btn" onclick="adjustPlayers(-1)" aria-label="weniger">−</button>
+        <span id="player-count-display" class="stepper-val">4</span>
+        <button class="stepper-btn" onclick="adjustPlayers(1)" aria-label="mehr">+</button>
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div class="setup-row">
+      <label class="setup-label">📚 Kategorie</label>
+      <div class="category-grid" id="category-grid"></div>
+    </div>
+
+    <!-- Mode -->
+    <div class="setup-row">
+      <label class="setup-label">🎮 Spielmodus</label>
+      <div class="mode-row" id="mode-row">
+        <button class="mode-btn active" data-mode="klassisch" onclick="selectMode(this)">
+          🎮<br><span>Klassisch</span>
+        </button>
+        <button class="mode-btn" data-mode="schnell" onclick="selectMode(this)">
+          ⚡<br><span>Schnellrunde</span>
+        </button>
+        <button class="mode-btn" data-mode="chaos" onclick="selectMode(this)">
+          🔥<br><span>Vokabel-Chaos</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="goToPlayerSetup()">SPIEL STARTEN →</button>
+  <button class="btn-ghost" onclick="goTo('teacher')">⚙ Lehrer-Einstellungen</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — SPIELERNAMEN
+══════════════════════════════════════ -->
+<div id="screen-player-setup" class="screen">
+  <h2 class="screen-title">Spielernamen eingeben</h2>
+  <p class="screen-sub" id="player-setup-hint">4 Spieler</p>
+  <div class="player-inputs" id="player-name-inputs"></div>
+  <button class="btn-primary" onclick="startGame()">WEITER →</button>
+  <button class="btn-back" onclick="goTo('start')">← Zurück</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3a — DATENSCHUTZ (vor der Rolle)
+══════════════════════════════════════ -->
+<div id="screen-role-privacy" class="screen">
+  <div class="privacy-card glass">
+    <div class="privacy-eyes">👀</div>
+    <h2 id="privacy-player-name" class="privacy-name">Spieler 1</h2>
+    <p class="privacy-text">Alle anderen: Augen zu und wegschauen!</p>
+    <button class="btn-primary" onclick="showRole()">MEIN WORT SEHEN 👁</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3b — ROLLE ANZEIGEN
+══════════════════════════════════════ -->
+<div id="screen-role-reveal" class="screen">
+  <div id="role-reveal-card" class="role-card glass">
+    <div class="role-badge" id="role-badge">TRIPULANTE</div>
+    <div class="role-astronaut" id="role-astronaut" aria-hidden="true">
+      <div class="role-blob">
+        <div class="role-blob-visor"></div>
+      </div>
+    </div>
+    <div class="role-word-label">Dein geheimes Wort:</div>
+    <div class="role-word" id="role-word">la manzana</div>
+    <div class="role-tip" id="role-tip">Beschreibe das Wort auf Spanisch, ohne es direkt zu nennen.</div>
+  </div>
+  <button class="btn-primary" onclick="nextPlayer()">VERSTANDEN ✓</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4 — DISKUSSION
+══════════════════════════════════════ -->
+<div id="screen-discussion" class="screen">
+  <div class="discussion-header">
+    <div class="phase-label">PHASE 1 — DISKUSSION</div>
+    <div class="timer-wrap">
+      <svg class="timer-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="43" class="timer-track"/>
+        <circle cx="50" cy="50" r="43" class="timer-fill" id="timer-circle"
+                stroke-dasharray="270" stroke-dashoffset="0"/>
+      </svg>
+      <span id="timer-display" class="timer-text">3:00</span>
+    </div>
+  </div>
+
+  <div class="question-card glass">
+    <div class="question-label">❓ Frage der Runde</div>
+    <div class="question-text" id="current-question">¿Cómo es?</div>
+    <button class="btn-small" onclick="nextQuestion()">🎲 Neue Frage</button>
+  </div>
+
+  <div class="players-grid" id="discussion-players"></div>
+
+  <div class="discussion-footer">
+    <button class="btn-danger" onclick="startVoting()">🚨 ABSTIMMUNG STARTEN</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5 — ABSTIMMUNG
+══════════════════════════════════════ -->
+<div id="screen-voting" class="screen">
+  <div class="emergency-header">
+    <div class="emergency-siren" aria-hidden="true">🚨</div>
+    <h2 class="emergency-title">EMERGENCY<br>MEETING</h2>
+    <p class="emergency-sub">¿Quién es el impostor?</p>
+  </div>
+
+  <div class="vote-timer-bar">
+    <div class="vote-timer-fill" id="vote-timer-fill"></div>
+    <span id="vote-timer-display" class="vote-timer-txt">30</span>
+  </div>
+
+  <div class="voting-grid" id="voting-grid"></div>
+
+  <button class="btn-primary" id="confirm-vote-btn" onclick="confirmVotes()" disabled>
+    🗳 ABSTIMMUNG BESTÄTIGEN
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6 — ERGEBNIS
+══════════════════════════════════════ -->
+<div id="screen-results" class="screen">
+  <div class="result-hero" id="result-hero">
+    <div class="result-icon" id="result-icon">🎉</div>
+    <h2 class="result-title" id="result-title">Die Crew gewinnt!</h2>
+    <p class="result-sub" id="result-sub"></p>
+  </div>
+
+  <div class="reveal-card glass" id="reveal-card">
+    <div class="reveal-label">🕵 Der Impostor war:</div>
+    <div class="reveal-name" id="impostor-revealed-name">—</div>
+    <div class="word-chips">
+      <div class="word-chip crew-chip">
+        Crew-Wort: <strong id="reveal-crew-word">—</strong>
+      </div>
+      <div class="word-chip impostor-chip">
+        Impostor-Wort: <strong id="reveal-impostor-word">—</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="scoreboard glass" id="scoreboard"></div>
+
+  <div class="results-actions">
+    <button class="btn-primary" onclick="playAgain()">🔄 NOCHMAL SPIELEN</button>
+    <button class="btn-ghost" onclick="goTo('start')">🏠 Startmenü</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 7 — LEHRER-EINSTELLUNGEN
+══════════════════════════════════════ -->
+<div id="screen-teacher" class="screen">
+  <h2 class="screen-title">⚙ Lehrer-Einstellungen</h2>
+
+  <div class="settings-card glass">
+    <h3 class="settings-section-title">⏱ Zeitlimits</h3>
+    <div class="settings-row">
+      <label>Diskussionszeit (Sekunden)</label>
+      <input type="number" id="setting-discussion-time" class="settings-input"
+             value="180" min="30" max="600" step="10">
+    </div>
+    <div class="settings-row">
+      <label>Abstimmungszeit (Sekunden)</label>
+      <input type="number" id="setting-vote-time" class="settings-input"
+             value="30" min="10" max="120" step="5">
+    </div>
+    <button class="btn-small" onclick="saveTimeSettings()">💾 Zeitlimits speichern</button>
+  </div>
+
+  <div class="settings-card glass">
+    <h3 class="settings-section-title">➕ Eigene Kategorie hinzufügen</h3>
+    <div class="settings-row">
+      <label>Kategoriename</label>
+      <input type="text" id="new-category-name" class="settings-input"
+             placeholder="z.B. Colores">
+    </div>
+    <div class="settings-row">
+      <label>Wörter (kommagetrennt)</label>
+      <textarea id="new-words" class="settings-textarea"
+                placeholder="rojo, azul, verde, amarillo, negro"></textarea>
+    </div>
+    <button class="btn-primary" onclick="saveCustomCategory()">Kategorie hinzufügen ✓</button>
+  </div>
+
+  <div class="settings-card glass">
+    <h3 class="settings-section-title">📋 Eigene Kategorien</h3>
+    <div id="custom-categories-list" class="custom-cat-list"></div>
+  </div>
+
+  <button class="btn-ghost" onclick="goTo('start')">← Zurück zum Spiel</button>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
